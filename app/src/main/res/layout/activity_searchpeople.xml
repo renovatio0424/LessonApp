@@ -35,9 +35,51 @@
             android:layout_height="wrap_content"
             app:tabMode="scrollable"/>
 
+        <TableRow
+            android:background="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <!--<TextView-->
+                <!--android:background="@drawable/rec_border"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:textColor="#000000"-->
+                <!--android:textAlignment="center"-->
+                <!--android:text="총 수업의 수"-->
+                <!--android:layout_weight="4"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/textView11" />-->
+
+            <TextView
+                android:layout_weight="1"
+                android:background="@drawable/rec_border"
+                android:padding="10dp"
+                android:textColor="#000000"
+                android:textAlignment="center"
+                android:text="최신 등록순 ▼"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/serch_dialog" />
+
+            <TextView
+                android:layout_weight="1"
+                android:background="@drawable/rec_border"
+                android:padding="10dp"
+                android:textColor="#000000"
+                android:textAlignment="center"
+                android:text="상세 검색"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/detailed_search" />
+        </TableRow>
+
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
+        android:background="#FFFFFF"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

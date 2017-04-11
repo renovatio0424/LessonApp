@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string-array name="teacher_gender">
+        <item>무관</item>
+        <item>남자</item>
+        <item>여자</item>
+    </string-array>
+</resources>

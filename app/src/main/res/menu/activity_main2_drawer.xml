@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_lesson"
+            android:icon="@drawable/ic_teacher_at_the_blackboard"
+            android:title="수업등록" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="학생찾기" />
+        <item
+            android:id="@+id/nav_chatting"
+            android:icon="@drawable/ic_chat_bubble_black_24dp"
+            android:title="과외톡" />
+        
+        <item android:title="마이페이지">
+            <menu>
+                <item
+                    android:id="@+id/nav_mypage"
+                    android:icon="@drawable/ic_account_box_black_24dp"
+                    android:title="내정보" />
+                <item
+                    android:id="@+id/nav_myclass"
+                    android:icon="@drawable/ic_signing_the_contract"
+                    android:title="내수업" />
+                <item
+                    android:id="@+id/nav_setting"
+                    android:icon="@drawable/ic_settings_black_24dp"
+                    android:title="설정" />
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@drawable/ic_logout"
+                    android:title="로그아웃" />
+            </menu>
+        </item>
+
+
+    </group>
+</menu>

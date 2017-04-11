@@ -1,6 +1,527 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:id="@+id/teacher_form">
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:layout_weight="3"
+                android:text="과외 대상"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView30" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <CheckBox
+                android:layout_weight="1"
+                android:text="초등학생"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sb1" />
+
+            <CheckBox
+                android:layout_weight="1"
+                android:text="중학생"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sb2" />
+
+            <CheckBox
+                android:layout_weight="1"
+                android:text="고등학생"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sb3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <CheckBox
+                android:layout_weight="1"
+                android:text="재수생"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sb4" />
+
+            <CheckBox
+                android:layout_weight="1"
+                android:text="대학생"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sb5" />
+
+            <CheckBox
+                android:layout_weight="1"
+                android:text="취업준비생"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sb6" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <CheckBox
+                android:layout_weight="1"
+                android:text="일반인"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sb7" />
+
+            <CheckBox
+                android:layout_weight="1"
+                android:text="기타"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sb8" />
+
+            <Space
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:text="개인/그룹 과외"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView32" />
+
+            <Spinner
+                android:layout_marginLeft="10dp"
+                android:layout_span="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lesson_category"
+                android:entries="@array/Lesson_category" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <TextView
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:text="과외 가능 시간 (최대 12개 선택 가능)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView22" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow1">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner1" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time1" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow2">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner2" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time2" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal2" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow3">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner3" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time3" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal3" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow4">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner4" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time4" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal4" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow5">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner5" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time5" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal5" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow6">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner6" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time6" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal6" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow7">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner7" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time7" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal7" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow8">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner8" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time8" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal8" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow9">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner9" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time9" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal9" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow10">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner10" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time10" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal10" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow11">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner11" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time11" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal11" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timerow12">
+
+            <Spinner
+                android:entries="@array/day_array"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TimeSpinner12" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="터치해주세요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/time12" />
+
+            <CheckBox
+                android:text="협의 가능"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deal12" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <TextView
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:text="자기소개 / 경력사항"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView40" />
+
+    <EditText
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:background="@drawable/border"
+        android:minHeight="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/multiText_tc"
+        android:hint="ex) 저는 과외 경력 3년차 물리 선생님입니다" />
+
+    <TextView
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:layout_gravity="right"
+        android:text="(0 / 65535 byte)"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/byte_length_tc" />
 </LinearLayout>

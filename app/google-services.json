@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "18305880834",
+    "firebase_url": "https://lessonme-42208.firebaseio.com",
+    "project_id": "lessonme-42208",
+    "storage_bucket": "lessonme-42208.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18305880834:android:55264e915e784e46",
+        "android_client_info": {
+          "package_name": "com.example.kimjungwon.lessonapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "18305880834-uihop4ohd5gdtmm5b1mhr81t6qn9rvrm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kimjungwon.lessonapp",
+            "certificate_hash": "090ABE7E889CD58C856C67E3E9AF13AF2076F8BF"
+          }
+        },
+        {
+          "client_id": "18305880834-dsq7g0ikcp70rgrljk7lpdnss40uvpgc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRNswPkudrskPBcolrF1zCKW9K-bjbyzE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "18305880834-dsq7g0ikcp70rgrljk7lpdnss40uvpgc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

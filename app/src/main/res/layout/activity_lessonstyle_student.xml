@@ -1,6 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/student_form"
+    android:padding="5dp">
 
+    <TextView
+        android:textStyle="bold"
+        android:textColor="@color/Black"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:text="과외 선생님 정보"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView20" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="10dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:padding="10dp"
+                android:text="성별"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView13" />
+
+            <Spinner
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tgender"
+                android:entries="@array/teacher_gender" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:padding="10dp"
+                android:text="나이"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView38" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/tage1"
+                android:hint="23" />
+
+            <TextView
+                android:text="~"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView39" />
+
+            <EditText
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/tage2"
+                android:hint="35" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <TextView
+        android:textColor="@color/Black"
+        android:textStyle="bold"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:text="선생님께 바라는 점"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView40" />
+
+    <EditText
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:background="@drawable/border"
+        android:minHeight="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/multiText_st"
+        android:hint="ex) 경시대회 준비를 도와주실수 있는 선생님만 연락주세요" />
+
+    <TextView
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:layout_gravity="right"
+        android:text="(0 / 65535 byte)"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/byte_length_st" />
 </LinearLayout>

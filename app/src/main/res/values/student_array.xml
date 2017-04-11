@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string-array name="student_array">
+        <item>무관</item>
+        <item>초등학생</item>
+        <item>중학생</item>
+        <item>고등학생</item>
+        <item>재수생</item>
+        <item>대학생</item>
+        <item>취업준비생</item>
+    </string-array>
+</resources>

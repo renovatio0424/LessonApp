@@ -1,0 +1,154 @@
+<resources>
+    <string name="app_name">LessonApp</string>
+
+    <string name="year_spinner">년</string>
+    <string name="month_spinner">월</string>
+    <string name="day_spinner">일</string>
+
+    <string name="area_c">시</string>
+    <string name="area_gun">군</string>
+    <string name="area_goo">구</string>
+
+    <string name="tab1">TAB 1</string>
+    <string name="tab2">TAB 2</string>
+    <string name="tab3">TAB 3</string>
+
+    <string name="select_area">지역 선택</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$2d</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string-array name="area_select">
+        <item>선택</item>
+    </string-array>
+
+    <string-array name="subject_array">
+        <item>없음</item>
+        <item>국어</item>
+        <item>영어</item>
+        <item>공인 영어 시험</item>
+        <item>수학</item>
+        <item>과학</item>
+        <item>사회</item>
+        <item>예체능</item>
+        <item>제2 외국어</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="nosubsection_array">
+        <item>없음</item>
+    </string-array>
+
+    <string-array name="kor_subsection_array">
+        <item>없음</item>
+        <item>초등 국어</item>
+        <item>중등 국어</item>
+        <item>고등 국어</item>
+        <item>수능</item>
+        <item>인문 논술</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="eng_subsection_array">
+        <item>없음</item>
+        <item>초등 영어</item>
+        <item>중등 영어</item>
+        <item>고등 영어</item>
+        <item>영어 문법</item>
+        <item>영어 작문</item>
+        <item>영어 독해</item>
+        <item>영어 듣기</item>
+        <item>영어 회화</item>
+        <item>영어 수능</item>
+        <item>영어 수시</item>
+        <item>영어 기타</item>
+    </string-array>
+
+    <string-array name="engTest_subsection_array">
+        <item>없음</item>
+        <item>토익</item>
+        <item>토플</item>
+        <item>텝스</item>
+        <item>GRE</item>
+        <item>IELTS</item>
+        <item>SAT</item>
+        <item>LSAT</item>
+        <item>토스</item>
+        <item>OPIC</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="math_subsection_array">
+        <item>없음</item>
+        <item>초등 수학</item>
+        <item>중등 수학</item>
+        <item>고등 수학</item>
+        <item>수리 A형</item>
+        <item>수리 B형</item>
+        <item>경시 대회</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="science_subsection_array">
+        <item>없음</item>
+        <item>초등 과학</item>
+        <item>중등 과학</item>
+        <item>물리</item>
+        <item>화학</item>
+        <item>생물</item>
+        <item>지구과학</item>
+        <item>경시대회</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="society_subsection_array">
+        <item>없음</item>
+        <item>생활과 윤리</item>
+        <item>사회문화</item>
+        <item>한국지리</item>
+        <item>세계지리</item>
+        <item>윤리와 사상</item>
+        <item>동아시아사</item>
+        <item>법과 정치</item>
+        <item>세계사</item>
+        <item>경제</item>
+        <item>경시대회</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="foreignlanguage_subsection_array">
+        <item>없음</item>
+        <item>독일어</item>
+        <item>프랑스어</item>
+        <item>스페인어</item>
+        <item>중국어</item>
+        <item>일본어</item>
+        <item>러시아어</item>
+        <item>아랍어</item>
+        <item>베트남어</item>
+        <item>한문</item>
+        <item>자격증</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="amp_subsection_array">
+        <item>없음</item>
+        <item>악기</item>
+        <item>작곡</item>
+        <item>성악</item>
+        <item>실용 음악</item>
+        <item>회화</item>
+        <item>조소</item>
+        <item>디자인</item>
+        <item>애니메이션</item>
+        <item>PT</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="etc_subsection_array">
+        <item>기타</item>
+    </string-array>
+</resources>
