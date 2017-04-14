@@ -51,4 +51,6 @@ dependencies {
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
     //리사이클러뷰 갱신 라이브러리
     compile 'com.github.pwittchen:infinitescroll:0.0.1'
+    //circle image
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }

@@ -158,7 +158,7 @@ public class activity_LOGIN extends AppCompatActivity implements View.OnClickLis
 
                         Intent gomain = new Intent(mContext, activity_main.class);
                         gomain.putExtra("id",jsonObject1.getString("id"));
-                        gomain.putExtra("name",jsonObject1.getString("name"));
+                        gomain.putExtra("User_name",jsonObject1.getString("name"));
                         gomain.putExtra("job",jsonObject1.getString("job"));
 
                         startActivity(gomain);
@@ -174,15 +174,13 @@ public class activity_LOGIN extends AppCompatActivity implements View.OnClickLis
                         String result_birthday = jsonObject1.getString("birthday");
 
                         goSelectJob.putExtra("email",result_email);
-                        goSelectJob.putExtra("name",result_name);
+                        goSelectJob.putExtra("User_name",result_name);
                         goSelectJob.putExtra("social",result_social);
                         goSelectJob.putExtra("gender",result_gender);
                         goSelectJob.putExtra("birthday",result_birthday);
 
                         startActivity(goSelectJob);
                     }
-
-
                     //제이슨 오브젝트 파싱
 //                    JSONObject jsonObject = new JSONObject(result);
 //                    String result_response = jsonObject.getString("response");
@@ -191,12 +189,10 @@ public class activity_LOGIN extends AppCompatActivity implements View.OnClickLis
 //                    String result_nickname = jsonObject1.getString("nickname");
 //                    String result_age = jsonObject1.getString("age");
 //                    String result_gender = jsonObject1.getString("gender");
-//                    String result_name = jsonObject1.getString("name");
+//                    String result_name = jsonObject1.getString("User_name");
 //                    String result_birthday = jsonObject1.getString("birthday");
 //
 //                    String parsing = "mail: " + result_mail + "\nnickname: " + result_nickname + "\nage: " + result_age + "\ngender" + result_gender + "\nname: " + result_name + "\nbirthday: " + result_birthday;
-
-
                 } catch (Exception e) {
                     System.out.println(e);
                 }
@@ -220,7 +216,6 @@ public class activity_LOGIN extends AppCompatActivity implements View.OnClickLis
         switch (id){
             case R.id.gojoin:
                 Intent intent = new Intent(getApplicationContext(),activity_selectjob.class);
-
                 startActivity(intent);
                 break;
 
@@ -236,13 +231,13 @@ public class activity_LOGIN extends AppCompatActivity implements View.OnClickLis
                         String result_msg = jsonObject.getString("msg");
 
                         Toast.makeText(getApplicationContext(),result_msg,Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(mContext, jsonObject.getString("id") + jsonObject.getString("name"), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(mContext, jsonObject.getString("id") + jsonObject.getString("User_name"), Toast.LENGTH_SHORT).show();
                         //아이디 중복이 안되었다면
                         if(result_login){
                             //자동으로 로그인 페이지 넘어가기
                             Intent goMain = new Intent(getApplicationContext(),activity_main.class);
                             goMain.putExtra("id",jsonObject.getString("id"));
-                            goMain.putExtra("name",jsonObject.getString("name"));
+                            goMain.putExtra("User_name",jsonObject.getString("name"));
                             goMain.putExtra("job",jsonObject.getString("job"));
                             //이번에 생긴 로그인 페이지는 스택에 쌓이지 않는당
                             goMain.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);

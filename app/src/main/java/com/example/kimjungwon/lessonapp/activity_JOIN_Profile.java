@@ -1,17 +1,15 @@
 package com.example.kimjungwon.lessonapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -34,19 +31,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by kimjungwon on 2017-02-17.
  */
 
-public class activity_Profile extends AppCompatActivity implements View.OnClickListener {
+public class activity_JOIN_Profile extends AppCompatActivity implements View.OnClickListener {
     ArrayList<Area> 시도_list, 구군_list, 동읍리_list;
     //    HashMap<String, Integer> AreaMap, AreaMap2;
     ArrayList<ArrayList<Area>> juso_list;
@@ -54,8 +46,9 @@ public class activity_Profile extends AppCompatActivity implements View.OnClickL
 
     String imageUri;
 
-
-    public static final int RESULT_SELECT_IMAGE = 1;
+    String TAG = activity_JOIN_Profile.class.getSimpleName();
+    private static final int PICK_FROM_CAMERA = 0;
+    private static final int PICK_FROM_ALBUM = 1;
 
     public EditText name, phone, age;
     public RadioButton male, female;
@@ -127,7 +120,7 @@ public class activity_Profile extends AppCompatActivity implements View.OnClickL
         //소셜 회원 가입
         if (Data.hasExtra("social")) {
             Data.getStringExtra("email");
-            name.setText(Data.getStringExtra("name"));
+            name.setText(Data.getStringExtra("User_name"));
             str_gender = Data.getStringExtra("gender");
             Data.getStringExtra("social");
 
@@ -168,7 +161,31 @@ public class activity_Profile extends AppCompatActivity implements View.OnClickL
         Log.i("nextstep", "click");
         switch (id) {
             case R.id.ProfileImg:
-                selectImage();
+                DialogInterface.OnClickListener CameraListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        doTakePhotoAction();
+                    }
+                };
+                DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        doTakeAlbumAction();
+                    }
+                };
+                DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                };
+
+                new AlertDialog.Builder(this).
+                        setTitle("업로드할 이미지 선택").
+                        setPositiveButton("사진촬영", CameraListener).
+                        setNegativeButton("앨범 선택", albumListener).
+                        setNeutralButton("취소", cancelListener).
+                        show();
                 break;
 
             case R.id.nextstep:
@@ -221,8 +238,8 @@ public class activity_Profile extends AppCompatActivity implements View.OnClickL
                 ///////////////////////////////////////////////////////////주소 유효성 체크
 //                str_address = area1.getSelectedItem() + " " + area2.getSelectedItem();
 
-//                Toast.makeText(activity_Profile.this, "" + SpinnerCheck(year,month,day) + SpinnerCheck(area1,area2,area3) , Toast.LENGTH_SHORT).show();
-//                Toast.makeText(activity_Profile.this, "birthday: " + str_birthday + "address: " + str_address + "phone: " + isCellphone(str_phone), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity_JOIN_Profile.this, "" + SpinnerCheck(year,month,day) + SpinnerCheck(area1,area2,area3) , Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity_JOIN_Profile.this, "birthday: " + str_birthday + "address: " + str_address + "phone: " + isCellphone(str_phone), Toast.LENGTH_SHORT).show();
                 //////////////////////////////////////////////////////////연락처
                 if (phone.getText().toString().length() == 0) {
                     Toast.makeText(this, "연락처를 입력해주세요", Toast.LENGTH_SHORT).show();
@@ -237,7 +254,7 @@ public class activity_Profile extends AppCompatActivity implements View.OnClickL
                     str_phone = phone.getText().toString();
                 }
 
-                Intent goClassInfo = new Intent(getApplicationContext(), activity_ClassInfo.class);
+                Intent goClassInfo = new Intent(getApplicationContext(), activity_JOIN_ClassInfo.class);
 
                 if (!Data.hasExtra("social")) {
                     goClassInfo.putExtra("id", Data.getStringExtra("id"));
@@ -248,14 +265,14 @@ public class activity_Profile extends AppCompatActivity implements View.OnClickL
                 }
 
 
-                Log.d("activity_Profile", "address" + str_address);
+                Log.d("activity_JOIN_Profile", "address" + str_address);
 
                 if(profileimg.getDrawable() == null){
                     imageUri = "null";
                 }
 
                 goClassInfo.putExtra("image",imageUri);
-                goClassInfo.putExtra("name", name.getText().toString());
+                goClassInfo.putExtra("User_name", name.getText().toString());
                 goClassInfo.putExtra("gender", str_gender);
                 goClassInfo.putExtra("age", str_age);
                 goClassInfo.putExtra("address", str_address);
@@ -264,7 +281,7 @@ public class activity_Profile extends AppCompatActivity implements View.OnClickL
 
                 //데이터 확인
                 Log.d("goClassInfo","image: " + imageUri
-                        + "\nname: " + name.getText().toString()
+                        + "\nUser_name: " + name.getText().toString()
                         + "\ngender: " + str_gender
                         + "\nage: " + str_age
                         + "\naddress: " + str_address
@@ -483,11 +500,9 @@ public class activity_Profile extends AppCompatActivity implements View.OnClickL
                 }
             }
 
-
 //                mAreaHandler = new AreaHandler(juso_list.get(list_index), spinner);
 
 //            }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -769,33 +784,44 @@ public class activity_Profile extends AppCompatActivity implements View.OnClickL
 //        return list;
 //    }
 
-    private void selectImage(){
-        //open album to select image
-        Intent gallaryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(gallaryIntent, RESULT_SELECT_IMAGE);
+    private void doTakePhotoAction() {
+        Log.d(TAG, "doTakePhotoAction");
+        Intent goCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(goCamera, PICK_FROM_CAMERA);
+    }
+
+    private void doTakeAlbumAction() {
+        Log.d(TAG, "doTakeAlbumAction");
+        Intent goAlbum = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(goAlbum, PICK_FROM_ALBUM);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_SELECT_IMAGE && resultCode == RESULT_OK && data != null){
-            //set the selected image to image variable
-            Uri image = data.getData();
-            CropImage.activity(image).setGuidelines(CropImageView.Guidelines.ON)
-                    .start(this);
-        }
-
-        else if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                profileimg.setImageURI(resultUri);
-                imageUri = resultUri.toString();
-                Toast.makeText(this, "resultUri: " + resultUri, Toast.LENGTH_SHORT).show();
-                Log.d("resultUri","resultUri: " + resultUri);
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
+        if (resultCode != RESULT_OK) {
+            Log.d(TAG, "onActivityResult fail");
+        } else {
+            switch (requestCode) {
+                case PICK_FROM_ALBUM:
+                    Uri image_album = data.getData();
+                    CropImage.activity(image_album).setGuidelines(CropImageView.Guidelines.ON).start(this);
+                    Log.d(TAG, "PICK FROM ALBUM OK");
+                    break;
+                case PICK_FROM_CAMERA:
+                    Uri image_camera = data.getData();
+                    CropImage.activity(image_camera).setGuidelines(CropImageView.Guidelines.ON).start(this);
+                    Log.d(TAG, "PICK FROM CAMERA OK");
+                    break;
+                case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+                    CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                    Uri resultUri = result.getUri();
+//                    backgroundimg.setImageURI(resultUri);
+                    Glide.with(this).load(resultUri).into(profileimg);
+                    imageUri = resultUri.toString();
+                    Log.d(TAG, "CROP OK \nresultUri: " + resultUri);
+                    break;
             }
         }
     }

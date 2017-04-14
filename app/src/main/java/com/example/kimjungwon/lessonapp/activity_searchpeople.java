@@ -1,12 +1,14 @@
 package com.example.kimjungwon.lessonapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 
@@ -17,12 +19,11 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ import java.util.HashMap;
 
 import static com.example.kimjungwon.lessonapp.URLconfig.FindPeople_url;
 
-public class activity_searchpeople extends AppCompatActivity implements View.OnClickListener {
+public class activity_searchpeople extends AppCompatActivity implements View.OnClickListener, DialogInterface.OnDismissListener {
 
     /**
      * The {@link PagerAdapter} that will provide
@@ -56,31 +57,29 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
      */
     private ViewPager mViewPager;
 
+    private static final String TAG = activity_searchpeople.class.getSimpleName();
+
     HashMap<String, Integer> AreaMap, AreaMap2;
     ArrayList<String> 시도_list, 구군_list;
 
-    static String[] subjects = {"신규", "국어", "영어", "수학", "사회", "과학", "예체능", "제2 외국어"};
+    static String[] subjects = {"신규", "국어", "영어", "수학", "사회", "과학", "예체능", "제2 외국어", "기타"};
     static int[] Current_pages = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    static ArrayList<ArrayList<Student>> Total_student_list;
+    static ArrayList<ArrayList<People>> Total_list;
 
-    static ArrayList<Student> student_list, 국어_student_list, 영어_student_list, 수학_student_list, 사회_student_list, 과학_student_list, 예체능_student_list, 제2외국어_student_list;
-    Spinner spinner1, spinner2;
-    ArrayAdapter adapter, adapter2;
+    static ArrayList<People> New_list, 국어_list, 영어_list, 수학_list, 사회_list, 과학_list, 예체능_list, 제2외국어_list, 기타_list;
 
     public static TextView BarTitle, sort_search, detailed_search;
 
     final public int Request_area = 1, goback_area = 2;
 
-    static String Usr_id;
-    static String name;
-    static String area_title;
+    static String User_id, User_name, User_job, area_title;
 
-
-
-    static RecyclerAdapter recyclerAdapter;
+    static RecyclerAdapter_student recyclerAdapterStudent;
 
     public OAuthLogin mOAuthLoginInstance;
+
+    static String sortmethod = "최신 등록순";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +89,11 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
         mOAuthLoginInstance = OAuthLogin.getInstance();
 
         BarTitle = (TextView) findViewById(R.id.Title);
+
+        User_id = getIntent().getStringExtra("id");
+        User_name = getIntent().getStringExtra("User_name");
+        User_job = getIntent().getStringExtra("job");
+        Log.d("main", "id: " + User_id + "\nUser_name: " + User_name + "\nUser_job: " + User_job);
 
         BarTitle.setText("지역 선택 ▼");
 
@@ -101,7 +105,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
             public void onClick(View view) {
 //                Toast.makeText(activity_searchpeople.this, "toolbar click!!", Toast.LENGTH_SHORT).show();
                 Intent goSelectArea = new Intent(getApplicationContext(), activity_SelectArea.class);
-                Usr_id = getIntent().getStringExtra("id");
+                User_id = getIntent().getStringExtra("id");
                 goSelectArea.putExtra("id", getIntent().getStringExtra("id"));
                 Log.d("goselectArea", getIntent().getStringExtra("id"));
 
@@ -127,27 +131,29 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
         시도_list = new ArrayList<>();
         구군_list = new ArrayList<>();
 
+        Total_list = new ArrayList<>();
+        New_list = new ArrayList<>();
+        국어_list = new ArrayList<>();
+        영어_list = new ArrayList<>();
+        수학_list = new ArrayList<>();
+        사회_list = new ArrayList<>();
+        과학_list = new ArrayList<>();
+        예체능_list = new ArrayList<>();
+        제2외국어_list = new ArrayList<>();
+        기타_list = new ArrayList<>();
 
-        Total_student_list = new ArrayList<>();
-        student_list = new ArrayList<>();
-        국어_student_list = new ArrayList<>();
-        영어_student_list = new ArrayList<>();
-        수학_student_list = new ArrayList<>();
-        사회_student_list = new ArrayList<>();
-        과학_student_list = new ArrayList<>();
-        예체능_student_list = new ArrayList<>();
-        제2외국어_student_list = new ArrayList<>();
 
-        Total_student_list.add(student_list);
-        Total_student_list.add(국어_student_list);
-        Total_student_list.add(영어_student_list);
-        Total_student_list.add(수학_student_list);
-        Total_student_list.add(사회_student_list);
-        Total_student_list.add(과학_student_list);
-        Total_student_list.add(예체능_student_list);
-        Total_student_list.add(제2외국어_student_list);
+        Total_list.add(New_list);
+        Total_list.add(국어_list);
+        Total_list.add(영어_list);
+        Total_list.add(수학_list);
+        Total_list.add(사회_list);
+        Total_list.add(과학_list);
+        Total_list.add(예체능_list);
+        Total_list.add(제2외국어_list);
+        Total_list.add(기타_list);
 
-        sort_search = (TextView) findViewById(R.id.serch_dialog);
+        sort_search = (TextView) findViewById(R.id.search_dialog);
         detailed_search = (TextView) findViewById(R.id.detailed_search);
 
         sort_search.setOnClickListener(this);
@@ -185,28 +191,26 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 //        TextView nav_header_name = (TextView) nav_header_view.findViewById(R.id.nav_header_name);
 //        TextView nav_header_id = (TextView) nav_header_view.findViewById(R.id.nav_header_id);
 //
-        Usr_id = getIntent().getStringExtra("id");
-        name = getIntent().getStringExtra("name");
-        Log.d("main", "id: " + Usr_id + "name: " + name);
+
 //
-//        if (getIntent().hasExtra("id") && getIntent().hasExtra("name")) {
+//        if (getIntent().hasExtra("id") && getIntent().hasExtra("User_name")) {
 //            nav_header_id.setText(getIntent().getStringExtra("id"));
-//            nav_header_name.setText(getIntent().getStringExtra("name"));
+//            nav_header_name.setText(getIntent().getStringExtra("User_name"));
 //        } else {
 //            nav_header_name.setText("이름");
 //            nav_header_id.setText("아이디");
 //        }
 
         //학생리스트 초기값
-        setStudents();
-        recyclerAdapter = new RecyclerAdapter(getApplicationContext(), student_list, R.layout.student_card);
+        setPeople();
+//        recyclerAdapterStudent = new RecyclerAdapter_student(getApplicationContext(), New_list, R.layout.card_student);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        recyclerAdapter.notifyDataSetChanged();
-        mSectionsPagerAdapter.notifyDataSetChanged();
+//        recyclerAdapterStudent.notifyDataSetChanged();
+//        mSectionsPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -220,10 +224,10 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                     area_title = data.getStringExtra("area");
                     String[] title_array = title.split("@");
 
-                    if(title_array.length > 1){
+                    if (title_array.length > 1) {
 
                         title = title_array[0] + " 외 " + (title_array.length - 1) + "곳";
-                    }else{
+                    } else {
                         title = title_array[0];
                     }
                     BarTitle.setText(title + " ▼");
@@ -231,62 +235,185 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                     Boolean all = data.getBooleanExtra("all", false);
 
                     if (all) {
-                        setStudents();
+                        setPeople();
                         break;
                     }
                     String students = data.getStringExtra("students");
 
 //                    Toast.makeText(this, "" + students, Toast.LENGTH_SHORT).show();
 
-                    try {
-                        JSONObject jo = new JSONObject(students);
+                    if(User_job.equals("teacher")){
+                        try {
+                            JSONObject jo = new JSONObject(students);
 //                        JSONArray ja = new JSONArray(students);
-                        student_list.clear();
+                            New_list.clear();
 
-                        for (int j = 0; j < Total_student_list.size(); j++) {
-                            //담기 전에 초기화
-                            Total_student_list.get(j).clear();
+                            for (int j = 0; j < Total_list.size(); j++) {
+                                //담기 전에 초기화
+                                Total_list.get(j).clear();
 
-                            JSONArray ja = jo.getJSONArray(subjects[j]);
+                                JSONArray ja = jo.getJSONArray(subjects[j]);
 
-                            for (int i = 0; i < ja.length(); i++) {
-                                JSONObject jo2 = ja.getJSONObject(i);
-                                String name = jo2.getString("name");
-                                String gender = jo2.getString("gender");
-                                String address = jo2.getString("address");
-                                String LessonFee = jo2.getString("LessonFee");
-                                String LessonSubject = jo2.getString("LessonSubject");
-                                String LessonStyle = jo2.getString("LessonStyle");
-                                String dealpossible = jo2.getString("deal_possible");
+                                for (int i = 0; i < ja.length(); i++) {
+                                    JSONObject jo2 = ja.getJSONObject(i);
+                                    String name = jo2.getString("name");
+                                    String gender = jo2.getString("gender");
+                                    String profile_image = jo2.getString("profile_image");
+                                    String address = jo2.getString("address");
+                                    String LessonFee = jo2.getString("LessonFee");
+                                    String LessonSubject = jo2.getString("LessonSubject");
+                                    String dealpossible = jo2.getString("deal_possible");
+                                    String intro = jo2.getString("intro");
+                                    String reg_date = jo2.getString("reg_date");
+                                    String last_connect_date = jo2.getString("last_connect_date");
 
-                                Log.d("student", "" + subjects[j] + ") name: " + name + " gender: " + gender + " address: " + address + " LessonFee: " + LessonFee + " LessonSubject: " + LessonSubject + " LessonStyle: " + LessonStyle + " deal_possible: " + dealpossible);
+                                    String teacher_age = jo2.getString("teacher_age");
+                                    String teacher_gender = jo2.getString("teacher_gender");
 
-                                Student st = new Student();
-                                st.setName(name);
-                                st.setGender(gender);
-                                st.setAddress(address);
-                                st.setFee(LessonFee);
-                                st.setStyle(LessonStyle);
-                                st.setSubject(LessonSubject);
-                                st.setDealpossible(dealpossible);
+                                    Log.d("student", "" + subjects[j] + ")" +
+                                            " name: " + name +
+                                            " gender: " + gender +
+                                            " profile_image" + profile_image +
+                                            " address: " + address +
+                                            " LessonFee: " + LessonFee +
+                                            " LessonSubject: " + LessonSubject +
+                                            " deal_possible: " + dealpossible +
+                                            " intro: " + intro +
+                                            " reg_date: " + reg_date +
+                                            " last_connect_date: " + last_connect_date);
 
-                                Total_student_list.get(j).add(st);
+                                    Student st = new Student();
+                                    st.setName(name);
+                                    st.setGender(gender);
+                                    st.setProfile_image(profile_image);
+                                    st.setAddress(address);
+                                    st.setFee(LessonFee);
+                                    st.setSubject(LessonSubject);
+                                    st.setDealpossible(dealpossible);
+                                    st.setIntro(intro);
+                                    st.setReg_date(reg_date);
+                                    st.setLast_connect_date(last_connect_date);
 
-                                mSectionsPagerAdapter.notifyDataSetChanged();
-//                            String total = name + gender + id ;
+                                    st.setTeacher_age(teacher_age);
+                                    st.setTeacher_gender(teacher_gender);
+
+                                    Total_list.get(j).add(st);
+
+                                    mSectionsPagerAdapter.notifyDataSetChanged();
+//                            String total = User_name + gender + id ;
 //                            Log.d("JSONARRAY",""+ i + ":" + tot
+                                }
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+                    }else if(User_job.equals("student")){
+                        try {
+                            JSONObject jo = new JSONObject(students);
+//                        JSONArray ja = new JSONArray(students);
+                            New_list.clear();
+
+                            for (int j = 0; j < Total_list.size(); j++) {
+                                //담기 전에 초기화
+                                Total_list.get(j).clear();
+
+                                JSONArray ja = jo.getJSONArray(subjects[j]);
+
+                                for (int i = 0; i < ja.length(); i++) {
+                                    JSONObject jo2 = ja.getJSONObject(i);
+                                    String name = jo2.getString("name");
+                                    String gender = jo2.getString("gender");
+                                    String profile_image = jo2.getString("profile_image");
+                                    String address = jo2.getString("address");
+                                    String LessonFee = jo2.getString("LessonFee");
+                                    String LessonSubject = jo2.getString("LessonSubject");
+                                    String dealpossible = jo2.getString("deal_possible");
+                                    String intro = jo2.getString("intro");
+                                    String reg_date = jo2.getString("reg_date");
+                                    String last_connect_date = jo2.getString("last_connect_date");
+
+                                    //선생님 추가 정보
+                                    String CollegeName = jo2.getString("CollegeName");
+                                    String lessoncategory = jo2.getString("lessoncategory");
+                                    String lessonplace = jo2.getString("lessonplace");
+                                    String schedule = jo2.getString("schedule");
 
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                                    Lesson lesson = new Lesson();
+                                    JSONObject lessonjson = jo2.getJSONObject("lesson");
+                                    String lessontitle = lessonjson.getString("title");
+                                    String background_img = lessonjson.getString("lessonbackground");
+                                    String studentlevel = lessonjson.getString("studentlevel");
+                                    String lessonsb = lessonjson.getString("lessonsubject");
+                                    String lessonintro = lessonjson.getString("intro");
+                                    String lesson_reg_date = lessonjson.getString("reg_date");
+                                    int hits = lessonjson.getInt("hits");
+
+                                    Boolean recruiting = false;
+
+                                    if(lessonjson.get("recruiting").equals("true")){
+                                        recruiting = true;
+                                    }
+
+
+                                    lesson.setLesson_Title(lessontitle);
+                                    lesson.setLesson_Background_Image(background_img);
+                                    lesson.setStudentlevel(studentlevel);
+                                    lesson.setLesson_Subject(lessonsb);
+                                    lesson.setIntro(lessonintro);
+                                    lesson.setReg_date(lesson_reg_date);
+                                    lesson.setHits(hits);
+                                    lesson.setRecruiting(recruiting);
+                                    Log.d("student", "" + subjects[j] + ")" +
+                                            " name: " + name +
+                                            " gender: " + gender +
+                                            " profile_image" + profile_image +
+                                            " address: " + address +
+                                            " LessonFee: " + LessonFee +
+                                            " LessonSubject: " + LessonSubject +
+                                            " deal_possible: " + dealpossible +
+                                            " intro: " + intro +
+                                            " reg_date: " + reg_date +
+                                            " last_connect_date: " + last_connect_date);
+
+                                    Teacher teacher = new Teacher();
+                                    teacher.setName(name);
+                                    teacher.setGender(gender);
+                                    teacher.setProfile_image(profile_image);
+                                    teacher.setAddress(address);
+                                    teacher.setFee(LessonFee);
+                                    teacher.setSubject(LessonSubject);
+                                    teacher.setDealpossible(dealpossible);
+                                    teacher.setIntro(intro);
+                                    teacher.setReg_date(reg_date);
+                                    teacher.setLast_connect_date(last_connect_date);
+
+                                    teacher.setCollegeName(CollegeName);
+                                    teacher.setLessoncategory(lessoncategory);
+                                    teacher.setLessonPlace(lessonplace);
+                                    teacher.setSchedule(schedule);
+                                    teacher.setLesson(lesson);
+
+                                    Total_list.get(j).add(teacher);
+
+                                    mSectionsPagerAdapter.notifyDataSetChanged();
+//                            String total = User_name + gender + id ;
+//                            Log.d("JSONARRAY",""+ i + ":" + tot
+                                }
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-//                    for (int i = 0; i < student_list.size(); i++) {
-//                        String name = student_list.get(i).getName();
-//                        String gender = student_list.get(i).getGender();
+
+
+//                    for (int i = 0; i < New_list.size(); i++) {
+//                        String User_name = New_list.get(i).getName();
+//                        String gender = New_list.get(i).getGender();
 //
-//                        Log.d("ArrayList", "" + i + ":" + name + " " + gender);
+//                        Log.d("ArrayList", "" + i + ":" + User_name + " " + gender);
 //                    }
 //                    Toast.makeText(this, "students: " + students, Toast.LENGTH_SHORT).show();
 //                    for()
@@ -298,7 +425,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                 break;
 
             case goback_area:
-                setStudents();
+                setPeople();
                 break;
         }
 
@@ -308,15 +435,25 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         int id = view.getId();
 
-        switch (id){
+        switch (id) {
             case R.id.detailed_search:
 //                Intent goDetailSearch = new Intent(getApplicationContext(),)
+                Toast.makeText(this, "sortmethod: " + sortmethod, Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.serch_dialog:
-                Dialog_sort_search dialog_sort_search = new Dialog_sort_search(activity_searchpeople.this, "정렬 방법을 선택해주세요");
+            case R.id.search_dialog:
+                Dialog_sort_search dialog_sort_search = new Dialog_sort_search(activity_searchpeople.this, "정렬 방법을 선택해주세요", sortmethod.replace(" ▼", ""), User_job);
+                dialog_sort_search.setOnDismissListener(activity_searchpeople.this);
                 dialog_sort_search.show();
                 break;
         }
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialogInterface) {
+        Log.d(TAG, "sortmethod: " + sortmethod);
+        String st = sortmethod;
+        sort_search.setText(sortmethod + " ▼");
+        Toast.makeText(this, "sortmethod: " + st, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -543,9 +680,11 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
         private boolean isLoading = true;
 
-        GridLayoutManager layoutManager;
+        LinearLayoutManager layoutManager;
+
         RecyclerView recyclerView;
-        RecyclerAdapter recyclerAdapter;
+        RecyclerAdapter_student recyclerAdapterStudent;
+        RecyclerAdapter_teacher recyclerAdapter_teacher;
 
 
         public PlaceholderFragment() {
@@ -575,44 +714,58 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 //            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             recyclerView = (RecyclerView) rootView.findViewById(R.id.RecyclerView);
 
-            final ArrayList<Student> list = Total_student_list.get(getArguments().getInt(ARG_SECTION_NUMBER));
-//            if (student_list.size() == 0) {
-//                String URL, String name, String place, String subject, String fee
-//                recyclerAdapter = new RecyclerAdapter(getContext(), student_list, R.layout.student_card);
+//            if (New_list.size() == 0) {
+//                String URL, String User_name, String place, String subject, String fee
+//                recyclerAdapterStudent = new RecyclerAdapter_student(getContext(), New_list, R.layout.card_student);
 
 
 //                for (int i = 0; i < 8; i++) {
-//                    recyclerAdapter.addItem(
+//                    recyclerAdapterStudent.addItem(
 //                            "이름\n-section: " + getArguments().getInt(ARG_SECTION_NUMBER) + "\n-index: " + i,
 //                            "장소\n-section: " + getArguments().getInt(ARG_SECTION_NUMBER) + "\n-index: " + i,
 //                            "과목\n-section: " + getArguments().getInt(ARG_SECTION_NUMBER) + "\n-index: " + i,
 //                            "과외비\n-section: " + getArguments().getInt(ARG_SECTION_NUMBER) + "\n-index: " + i);
 //                }
 //            } else {
-            recyclerAdapter = new RecyclerAdapter(getContext(), list, R.layout.student_card);
+
+            int Tab_number = getArguments().getInt(ARG_SECTION_NUMBER);
+
+            final ArrayList<People> list = Total_list.get(Tab_number);
+
+            if (User_job.equals("student")) {
+                recyclerAdapter_teacher = new RecyclerAdapter_teacher(getContext(), list, R.layout.card_lesson);
+                recyclerAdapter_teacher.notifyDataSetChanged();
+                layoutManager = new GridLayoutManager(getContext(), 2);
+                layoutManager.setOrientation(GridLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(recyclerAdapter_teacher);
+
+            } else if (User_job.equals("teacher")) {
+                recyclerAdapterStudent = new RecyclerAdapter_student(getContext(), list, R.layout.card_student);
+                recyclerAdapterStudent.notifyDataSetChanged();
+                layoutManager = new GridLayoutManager(getContext(), 2);
+                layoutManager.setOrientation(GridLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(recyclerAdapterStudent);
+            }
+
 //            }
 
 //            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 //            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 //            layoutManager.scrollToPosition(0);
-            recyclerAdapter.notifyDataSetChanged();
-
-            layoutManager = new GridLayoutManager(getContext(), 2);
-            layoutManager.setOrientation(GridLayoutManager.VERTICAL);
 
 //            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, 1);
 //            layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 //            layoutManager.setOrientation(StaggeredGridLayoutManager.VERTICAL);
 
-            recyclerView.setLayoutManager(layoutManager);
-
-            recyclerView.setAdapter(recyclerAdapter);
-
             recyclerView.addOnScrollListener(infiniteScrollListener());
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Toast.makeText(getContext(), "index" + position + "name: " + list.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "index" + position + "User_name: " + list.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    Intent goInfoClass = new Intent(getContext(),activity_Info_Class.class);
+                    startActivity(goInfoClass);
                 }
 
                 @Override
@@ -661,32 +814,39 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                 @Override
                 public void onScrolledToEnd(int firstVisibleItemPosition) {
                     Log.d("onScrolledToEnd", "called!!!!!!!!");
-
 //                    String area = BarTitle.getText().toString().replace(" ▼","");
 //                    if(area.equals("지역 선택")){
 //                        area = area.replace("지역 선택","");
 //                    }
 
-                    String subject = subjects[getArguments().getInt(ARG_SECTION_NUMBER)];
-                    int page = Current_pages[getArguments().getInt(ARG_SECTION_NUMBER)] + 1;
+                    int section = getArguments().getInt(ARG_SECTION_NUMBER);
 
-                    ArrayList<Student> NewList = LoadMoreStudents(area_title, subject, page);
+                    String subject = subjects[section];
+                    int page = Current_pages[section] + 1;
 
-                    if(NewList.isEmpty()){
+                    ArrayList<People> NewList = LoadMoreStudents(area_title, subject, page);
+
+                    if (NewList.isEmpty()) {
                         Toast.makeText(getContext(), "등록된 학생이 없습니다", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Total_student_list.get(getArguments().getInt(ARG_SECTION_NUMBER)).addAll(NewList);
+                    } else {
+                        Total_list.get(section).addAll(NewList);
 
-                        for(int i = 0 ; i < Total_student_list.get(getArguments().getInt(ARG_SECTION_NUMBER)).size() ; i ++){
-                            Student st = Total_student_list.get(getArguments().getInt(ARG_SECTION_NUMBER)).get(i);
-                            Log.d("LoadMoreStudents","name: " + st.getName());
+                        for (int i = 0; i < Total_list.get(section).size(); i++) {
+                            People pp = Total_list.get(section).get(i);
+                            Log.d("LoadMoreStudents", "User_name: " + pp.getName());
+                        }
+                        if(User_job.equals("student")){
+                            refreshView(recyclerView,
+                                    new RecyclerAdapter_teacher(getContext(), Total_list.get(section), R.layout.card_lesson),
+                                    firstVisibleItemPosition);
+                        }else if(User_job.equals("teacher")){
+                            refreshView(recyclerView,
+                                    new RecyclerAdapter_student(getContext(), Total_list.get(section), R.layout.card_student),
+                                    firstVisibleItemPosition);
                         }
 
-                        refreshView(recyclerView,
-                                new RecyclerAdapter(getContext(), Total_student_list.get(getArguments().getInt(ARG_SECTION_NUMBER)), R.layout.student_card),
-                                firstVisibleItemPosition);
 
-                        Current_pages[getArguments().getInt(ARG_SECTION_NUMBER)]++;
+                        Current_pages[section]++;
                     }
                 }
             };
@@ -716,7 +876,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
         @Override
         public int getCount() {
             // Show total pages.
-            return 8;
+            return 9;
         }
 
         @Override
@@ -815,11 +975,11 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
     public static ArrayList LoadMoreStudents(String Address, String Subject, int Current_page) {
         JSONObject jo = new JSONObject();
-        ArrayList<Student> resultlist = new ArrayList<>();
+        ArrayList<People> resultlist = new ArrayList<>();
 
         try {
-            jo.put("id", Usr_id);
-            jo.put("name", name);
+            jo.put("id", User_id);
+            jo.put("User_name", User_name);
             jo.put("case", 2);
             jo.put("page", Current_page);
             jo.put("address", Address);
@@ -842,28 +1002,163 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
             for (int i = 0; i < ja.length(); i++) {
                 JSONObject jo2 = ja.getJSONObject(i);
-                String name = jo2.getString("name");
-                String gender = jo2.getString("gender");
-                String address = jo2.getString("address");
-                String LessonFee = jo2.getString("LessonFee");
-                String LessonSubject = jo2.getString("LessonSubject");
-                String LessonStyle = jo2.getString("LessonStyle");
-                String dealpossible = jo2.getString("deal_possible");
+                //사용자가 선생님일 경우 -> 학생 양식에 맞게 담기
+                if(User_job.equals("teacher")){
+                    String name = jo2.getString("name");
+                    String gender = jo2.getString("gender");
+                    String profile_image = jo2.getString("profile_image");
+                    String address = jo2.getString("address");
+                    String LessonFee = jo2.getString("LessonFee");
+                    String LessonSubject = jo2.getString("LessonSubject");
+                    String dealpossible = jo2.getString("deal_possible");
+                    String intro = jo2.getString("intro");
+                    String reg_date = jo2.getString("reg_date");
+                    String last_connect_date = jo2.getString("last_connect_date");
 
-                Log.d("student", "" + Subject + ")name: " + name + " gender: " + gender + " address: " + address + " LessonFee: " + LessonFee + " LessonSubject: " + LessonSubject + " LessonStyle: " + LessonStyle + " deal_possible: " + dealpossible);
+                    //선생님 추가 정보
+                    String CollegeName = jo2.getString("CollegeName");
+                    String lessoncategory = jo2.getString("lessoncategory");
+                    String lessonplace = jo2.getString("lessonplace");
+                    String schedule = jo2.getString("schedule");
 
-                Student st = new Student();
-                st.setName(name);
-                st.setGender(gender);
-                st.setAddress(address);
-                st.setFee(LessonFee);
-                st.setStyle(LessonStyle);
-                st.setSubject(LessonSubject);
-                st.setDealpossible(dealpossible);
 
-                resultlist.add(st);
-//                            String total = name + gender + id ;
-//                            Log.d("JSONARRAY",""+ i + ":" + tot
+                    Lesson lesson = new Lesson();
+                    JSONObject lessonjson = jo2.getJSONObject("lesson");
+                    String lessontitle = lessonjson.getString("title");
+                    String background_img = lessonjson.getString("lessonbackground");
+                    String studentlevel = lessonjson.getString("studentlevel");
+                    String lessonsb = lessonjson.getString("lessonsubject");
+                    String lessonintro = lessonjson.getString("intro");
+                    String lesson_reg_date = lessonjson.getString("reg_date");
+                    int hits = lessonjson.getInt("hits");
+
+                    Boolean recruiting = false;
+
+                    if(lessonjson.get("recruiting").equals("true")){
+                        recruiting = true;
+                    }
+
+
+                    lesson.setLesson_Title(lessontitle);
+                    lesson.setLesson_Background_Image(background_img);
+                    lesson.setStudentlevel(studentlevel);
+                    lesson.setLesson_Subject(lessonsb);
+                    lesson.setIntro(lessonintro);
+                    lesson.setReg_date(lesson_reg_date);
+                    lesson.setHits(hits);
+                    lesson.setRecruiting(recruiting);
+                    Log.d("student", "" + Subject + ")" +
+                            " name: " + name +
+                            " gender: " + gender +
+                            " profile_image" + profile_image +
+                            " address: " + address +
+                            " LessonFee: " + LessonFee +
+                            " LessonSubject: " + LessonSubject +
+                            " deal_possible: " + dealpossible +
+                            " intro: " + intro +
+                            " reg_date: " + reg_date +
+                            " last_connect_date: " + last_connect_date);
+
+                    Teacher teacher = new Teacher();
+                    teacher.setName(name);
+                    teacher.setGender(gender);
+                    teacher.setProfile_image(profile_image);
+                    teacher.setAddress(address);
+                    teacher.setFee(LessonFee);
+                    teacher.setSubject(LessonSubject);
+                    teacher.setDealpossible(dealpossible);
+                    teacher.setIntro(intro);
+                    teacher.setReg_date(reg_date);
+                    teacher.setLast_connect_date(last_connect_date);
+
+                    teacher.setCollegeName(CollegeName);
+                    teacher.setLessoncategory(lessoncategory);
+                    teacher.setLessonPlace(lessonplace);
+                    teacher.setSchedule(schedule);
+                    teacher.setLesson(lesson);
+
+                    resultlist.add(teacher);
+                }
+                //사용자가 학생일 경우 -> 선생님 양식에 맞게 담기
+                else if(User_job.equals("student")){
+                    String name = jo2.getString("name");
+                    String gender = jo2.getString("gender");
+                    String profile_image = jo2.getString("profile_image");
+                    String address = jo2.getString("address");
+                    String LessonFee = jo2.getString("LessonFee");
+                    String LessonSubject = jo2.getString("LessonSubject");
+                    String dealpossible = jo2.getString("deal_possible");
+                    String intro = jo2.getString("intro");
+                    String reg_date = jo2.getString("reg_date");
+                    String last_connect_date = jo2.getString("last_connect_date");
+
+                    //선생님 추가 정보
+                    String CollegeName = jo2.getString("CollegeName");
+                    String lessoncategory = jo2.getString("lessoncategory");
+                    String lessonplace = jo2.getString("lessonplace");
+                    String schedule = jo2.getString("schedule");
+
+
+                    Lesson lesson = new Lesson();
+                    JSONObject lessonjson = jo2.getJSONObject("lesson");
+                    String lessontitle = lessonjson.getString("title");
+                    String background_img = lessonjson.getString("lessonbackground");
+                    String studentlevel = lessonjson.getString("studentlevel");
+                    String lessonsb = lessonjson.getString("lessonsubject");
+                    String lessonintro = lessonjson.getString("intro");
+                    String lesson_reg_date = lessonjson.getString("reg_date");
+                    int hits = lessonjson.getInt("hits");
+
+                    Boolean recruiting = false;
+
+                    if(lessonjson.get("recruiting").equals("true")){
+                        recruiting = true;
+                    }
+
+
+                    lesson.setLesson_Title(lessontitle);
+                    lesson.setLesson_Background_Image(background_img);
+                    lesson.setStudentlevel(studentlevel);
+                    lesson.setLesson_Subject(lessonsb);
+                    lesson.setIntro(lessonintro);
+                    lesson.setReg_date(lesson_reg_date);
+                    lesson.setHits(hits);
+                    lesson.setRecruiting(recruiting);
+                    Log.d("student", "" + Subject + ")" +
+                            " name: " + name +
+                            " gender: " + gender +
+                            " profile_image" + profile_image +
+                            " address: " + address +
+                            " LessonFee: " + LessonFee +
+                            " LessonSubject: " + LessonSubject +
+                            " deal_possible: " + dealpossible +
+                            " intro: " + intro +
+                            " reg_date: " + reg_date +
+                            " last_connect_date: " + last_connect_date);
+
+                    Teacher teacher = new Teacher();
+                    teacher.setName(name);
+                    teacher.setGender(gender);
+                    teacher.setProfile_image(profile_image);
+                    teacher.setAddress(address);
+                    teacher.setFee(LessonFee);
+                    teacher.setSubject(LessonSubject);
+                    teacher.setDealpossible(dealpossible);
+                    teacher.setIntro(intro);
+                    teacher.setReg_date(reg_date);
+                    teacher.setLast_connect_date(last_connect_date);
+
+                    teacher.setCollegeName(CollegeName);
+                    teacher.setLessoncategory(lessoncategory);
+                    teacher.setLessonPlace(lessonplace);
+                    teacher.setSchedule(schedule);
+                    teacher.setLesson(lesson);
+
+                    resultlist.add(teacher);
+                }
+
+                ////////////
+
             }
 
 
@@ -875,72 +1170,259 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
         return resultlist;
     }
 
-    public void setStudents() {
+    public void setPeople() {
         //jsonObject에 담아서 서버로 보내기
 
         JSONObject jo = new JSONObject();
 
         try {
-            jo.put("id", Usr_id);
-            jo.put("name", name);
+            jo.put("id", User_id);
+            jo.put("name", User_name);
             jo.put("case", 1);
             jo.put("page", 0);
 
             String str_json = jo.toString();
 
-            Log.d("setStudents", "before json: " + str_json);
+            Log.d("setPeople", "before json: " + str_json);
 
             PHPRequest request = new PHPRequest(FindPeople_url);
 
             String result = request.POSTJSON(str_json);
 
-            Log.d("setStudents", "after json: " + result);
+            Log.d("setPeople", "after json: " + result);
 
 //                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
 
-            try {
-                JSONObject jo3 = new JSONObject(result);
+            if(User_job.equals("teacher")){
+                try {
+                    JSONObject jo1 = new JSONObject(result);
 //                        JSONArray ja = new JSONArray(students);
-                student_list.clear();
+                    New_list.clear();
 
-                for (int j = 0; j < Total_student_list.size(); j++) {
-                    //담기 전에 초기화
-                    Total_student_list.get(j).clear();
+                    for (int j = 0; j < Total_list.size(); j++) {
+                        //담기 전에 초기화
+                        Total_list.get(j).clear();
 
-                    JSONArray ja = jo3.getJSONArray(subjects[j]);
+                        JSONArray ja = jo1.getJSONArray(subjects[j]);
 
-                    for (int i = 0; i < ja.length(); i++) {
-                        JSONObject jo2 = ja.getJSONObject(i);
-                        String name = jo2.getString("name");
-                        String gender = jo2.getString("gender");
-                        String address = jo2.getString("address");
-                        String LessonFee = jo2.getString("LessonFee");
-                        String LessonSubject = jo2.getString("LessonSubject");
-                        String LessonStyle = jo2.getString("LessonStyle");
-                        String dealpossible = jo2.getString("deal_possible");
+                        for (int i = 0; i < ja.length(); i++) {
+                            JSONObject jo2 = ja.getJSONObject(i);
+                            String name = jo2.getString("name");
+                            String gender = jo2.getString("gender");
+                            String profile_image = jo2.getString("profile_image");
+                            String address = jo2.getString("address");
+                            String LessonFee = jo2.getString("LessonFee");
+                            String LessonSubject = jo2.getString("LessonSubject");
+                            String dealpossible = jo2.getString("deal_possible");
+                            String intro = jo2.getString("intro");
+                            String reg_date = jo2.getString("reg_date");
+                            String last_connect_date = jo2.getString("last_connect_date");
 
-                        Log.d("studet", "" + subjects[j] + ")name: " + name + " gender: " + gender + " address: " + address + " LessonFee: " + LessonFee + " LessonSubject: " + LessonSubject + " LessonStyle: " + LessonStyle + " deal_possible: " + dealpossible);
+                            String teacher_age = jo2.getString("teacher_age");
+                            String teacher_gender = jo2.getString("teacher_gender");
 
-                        Student st = new Student();
-                        st.setName(name);
-                        st.setGender(gender);
-                        st.setAddress(address);
-                        st.setFee(LessonFee);
-                        st.setStyle(LessonStyle);
-                        st.setSubject(LessonSubject);
-                        st.setDealpossible(dealpossible);
+                            Log.d("student", "" + subjects[j] + ")" +
+                                    " name: " + name +
+                                    " gender: " + gender +
+                                    " profile_image" + profile_image +
+                                    " address: " + address +
+                                    " LessonFee: " + LessonFee +
+                                    " LessonSubject: " + LessonSubject +
+                                    " deal_possible: " + dealpossible +
+                                    " intro: " + intro +
+                                    " reg_date: " + reg_date +
+                                    " last_connect_date: " + last_connect_date);
 
-                        Total_student_list.get(j).add(st);
+                            Student st = new Student();
+                            st.setName(name);
+                            st.setGender(gender);
+                            st.setProfile_image(profile_image);
+                            st.setAddress(address);
+                            st.setFee(LessonFee);
+                            st.setSubject(LessonSubject);
+                            st.setDealpossible(dealpossible);
+                            st.setIntro(intro);
+                            st.setReg_date(reg_date);
+                            st.setLast_connect_date(last_connect_date);
 
-                        mSectionsPagerAdapter.notifyDataSetChanged();
-//                            String total = name + gender + id ;
+                            st.setTeacher_age(teacher_age);
+                            st.setTeacher_gender(teacher_gender);
+
+                            Total_list.get(j).add(st);
+
+                            mSectionsPagerAdapter.notifyDataSetChanged();
+//                            String total = User_name + gender + id ;
 //                            Log.d("JSONARRAY",""+ i + ":" + tot
+                        }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+            }else if(User_job.equals("student")){
+                try {
+                    JSONObject jo1 = new JSONObject(result);
+//                        JSONArray ja = new JSONArray(students);
+                    New_list.clear();
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    for (int j = 0; j < Total_list.size(); j++) {
+                        //담기 전에 초기화
+                        Total_list.get(j).clear();
+
+                        JSONArray ja = jo1.getJSONArray(subjects[j]);
+
+                        for (int i = 0; i < ja.length(); i++) {
+                            JSONObject jo2 = ja.getJSONObject(i);
+                            String name = jo2.getString("name");
+                            String gender = jo2.getString("gender");
+                            String profile_image = jo2.getString("profile_image");
+                            String address = jo2.getString("address");
+                            String LessonFee = jo2.getString("LessonFee");
+                            String LessonSubject = jo2.getString("LessonSubject");
+                            String dealpossible = jo2.getString("deal_possible");
+                            String intro = jo2.getString("intro");
+                            String reg_date = jo2.getString("reg_date");
+                            String last_connect_date = jo2.getString("last_connect_date");
+
+                            //선생님 추가 정보
+                            String CollegeName = jo2.getString("CollegeName");
+                            String lessoncategory = jo2.getString("lessoncategory");
+                            String lessonplace = jo2.getString("lessonplace");
+                            String schedule = jo2.getString("schedule");
+
+
+                            Lesson lesson = new Lesson();
+                            JSONObject lessonjson = jo2.getJSONObject("lesson");
+                            String lessontitle = lessonjson.getString("title");
+                            String background_img = lessonjson.getString("lessonbackground");
+                            String studentlevel = lessonjson.getString("studentlevel");
+                            String lessonsb = lessonjson.getString("lessonsubject");
+                            String lessonintro = lessonjson.getString("intro");
+                            String lesson_reg_date = lessonjson.getString("reg_date");
+                            int hits = lessonjson.getInt("hits");
+
+                            Boolean recruiting = false;
+
+                            if(lessonjson.get("recruiting").equals("true")){
+                                recruiting = true;
+                            }
+
+
+                            lesson.setLesson_Title(lessontitle);
+                            lesson.setLesson_Background_Image(background_img);
+                            lesson.setStudentlevel(studentlevel);
+                            lesson.setLesson_Subject(lessonsb);
+                            lesson.setIntro(lessonintro);
+                            lesson.setReg_date(lesson_reg_date);
+                            lesson.setHits(hits);
+                            lesson.setRecruiting(recruiting);
+                            Log.d("student", "" + subjects[j] + ")" +
+                                    " name: " + name +
+                                    " gender: " + gender +
+                                    " profile_image" + profile_image +
+                                    " address: " + address +
+                                    " LessonFee: " + LessonFee +
+                                    " LessonSubject: " + LessonSubject +
+                                    " deal_possible: " + dealpossible +
+                                    " intro: " + intro +
+                                    " reg_date: " + reg_date +
+                                    " last_connect_date: " + last_connect_date);
+
+                            Teacher teacher = new Teacher();
+                            teacher.setName(name);
+                            teacher.setGender(gender);
+                            teacher.setProfile_image(profile_image);
+                            teacher.setAddress(address);
+                            teacher.setFee(LessonFee);
+                            teacher.setSubject(LessonSubject);
+                            teacher.setDealpossible(dealpossible);
+                            teacher.setIntro(intro);
+                            teacher.setReg_date(reg_date);
+                            teacher.setLast_connect_date(last_connect_date);
+
+                            teacher.setCollegeName(CollegeName);
+                            teacher.setLessoncategory(lessoncategory);
+                            teacher.setLessonPlace(lessonplace);
+                            teacher.setSchedule(schedule);
+                            teacher.setLesson(lesson);
+
+                            Total_list.get(j).add(teacher);
+
+                            mSectionsPagerAdapter.notifyDataSetChanged();
+//                            String total = User_name + gender + id ;
+//                            Log.d("JSONARRAY",""+ i + ":" + tot
+                        }
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+
+
+//            try {
+//                JSONObject jo3 = new JSONObject(result);
+////                        JSONArray ja = new JSONArray(students);
+//                New_list.clear();
+//
+//                for (int j = 0; j < Total_list.size(); j++) {
+//                    //담기 전에 초기화
+//                    Total_list.get(j).clear();
+//
+//                    JSONArray ja = jo3.getJSONArray(subjects[j]);
+//
+//                    if(User_job.equals("teacher")){
+//                        for (int i = 0; i < ja.length(); i++) {
+//                            JSONObject jo2 = ja.getJSONObject(i);
+//                            String name = jo2.getString("name");
+//                            String gender = jo2.getString("gender");
+//                            String address = jo2.getString("address");
+//                            String LessonFee = jo2.getString("LessonFee");
+//                            String LessonSubject = jo2.getString("LessonSubject");
+//                            String dealpossible = jo2.getString("deal_possible");
+//
+//                            Log.d("student", "" + subjects[j] + ")User_name: " + name + " gender: " + gender + " address: " + address + " LessonFee: " + LessonFee + " LessonSubject: " + LessonSubject + " deal_possible: " + dealpossible);
+//
+//                            Student st = new Student();
+//                            st.setName(name);
+//                            st.setGender(gender);
+//                            st.setAddress(address);
+//                            st.setFee(LessonFee);
+//                            st.setSubject(LessonSubject);
+//                            st.setDealpossible(dealpossible);
+//
+//                            Total_list.get(j).add(st);
+//
+//                            mSectionsPagerAdapter.notifyDataSetChanged();
+//                        }
+//                    }else if(User_job.equals("student")){
+//                        for (int i = 0; i < ja.length(); i++) {
+//                            JSONObject jo2 = ja.getJSONObject(i);
+//                            String name = jo2.getString("name");
+//                            String gender = jo2.getString("gender");
+//                            String address = jo2.getString("address");
+//                            String LessonFee = jo2.getString("LessonFee");
+//                            String LessonSubject = jo2.getString("LessonSubject");
+//                            String dealpossible = jo2.getString("deal_possible");
+//
+//                            Log.d("student", "" + subjects[j] + ")User_name: " + name + " gender: " + gender + " address: " + address + " LessonFee: " + LessonFee + " LessonSubject: " + LessonSubject + " deal_possible: " + dealpossible);
+//
+//                            Teacher teacher = new Teacher();
+//                            teacher.setName(name);
+//                            teacher.setGender(gender);
+//                            //선생님 추가 입력
+//
+//                            Total_list.get(j).add(teacher);
+//
+//                            mSectionsPagerAdapter.notifyDataSetChanged();
+//                        }
+//                    }
+//
+//                }
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

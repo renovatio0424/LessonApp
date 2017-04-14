@@ -49,6 +49,7 @@
         </LinearLayout>
 
         <RadioGroup
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -58,7 +59,7 @@
 
             <RadioButton
                 android:textColor="#000000"
-                android:text="최신 등록순"
+                android:text="가입 순"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/radioButton1"
@@ -66,7 +67,7 @@
 
             <RadioButton
                 android:textColor="#000000"
-                android:text="조회순"
+                android:text="로그인 순"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/radioButton2"
@@ -74,10 +75,48 @@
 
             <RadioButton
                 android:textColor="#000000"
-                android:text="후기 많은 순"
+                android:text="접속 순"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/radioButton3"
+                android:layout_weight="1" />
+
+        </RadioGroup>
+
+        <RadioGroup
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:textColor="#000000"
+                android:text="최신 등록순"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButton7"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:text="조회수 순"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButton4"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:text="후기 많은 순"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButton5"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:text="수업 등록순"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioButton6"
                 android:layout_weight="1" />
 
         </RadioGroup>

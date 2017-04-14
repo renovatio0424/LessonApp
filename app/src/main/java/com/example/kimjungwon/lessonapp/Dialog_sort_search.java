@@ -4,9 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,16 +22,19 @@ public class Dialog_sort_search extends Dialog implements View.OnClickListener {
     private Button CancleBtn, OkBtn;
     private RadioGroup sort_method_group;
 
-    String Title;
+    String TAG = Dialog_sort_search.class.getSimpleName();
+    String Title,Result,sortmethod,job;
 
     Context context;
 
     private OnDismissListener onDismissListener;
 
-    public Dialog_sort_search(Context context, String title) {
+    public Dialog_sort_search(Context context, String title, String sortmethod ,String job) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.context = context;
         this.Title = title;
+        this.sortmethod = sortmethod;
+        this.job = job;
     }
 
     @Override
@@ -49,6 +54,29 @@ public class Dialog_sort_search extends Dialog implements View.OnClickListener {
 
         sort_method_group = (RadioGroup) findViewById(R.id.RadioGroup);
 
+        switch (sortmethod){
+            case "최신 등록순":
+                sort_method_group.check(R.id.radioButton1);
+                break;
+            case "조회순":
+                sort_method_group.check(R.id.radioButton2);
+                break;
+            case "후기 많은 순":
+                sort_method_group.check(R.id.radioButton3);
+                break;
+        }
+        sort_method_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                int id2 = i;
+
+                RadioButton rb = (RadioButton) findViewById(i);
+                Result = rb.getText().toString();
+                activity_searchpeople.sortmethod = Result;
+                Log.d(TAG,"sortmethod: " + activity_searchpeople.sortmethod);
+            }
+        });
+
         TitleView.setText(this.Title);
         OkBtn.setOnClickListener(this);
         CancleBtn.setOnClickListener(this);
@@ -62,20 +90,6 @@ public class Dialog_sort_search extends Dialog implements View.OnClickListener {
             case R.id.btn_ok_sort:
                 if(onDismissListener != null){
                     onDismissListener.onDismiss(Dialog_sort_search.this);
-                }
-
-                int id2 = sort_method_group.getCheckedRadioButtonId();
-
-                switch (id2){
-                    case R.id.radioButton1:
-                        Toast.makeText(context, "1", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.radioButton2:
-                        Toast.makeText(context, "2", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.radioButton3:
-                        Toast.makeText(context, "3", Toast.LENGTH_SHORT).show();
-                        break;
                 }
 
                 this.dismiss();

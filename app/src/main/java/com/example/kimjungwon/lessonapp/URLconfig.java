@@ -14,4 +14,6 @@ public class URLconfig {
     public static String ImgUpload_url = MyURL + "/fileUpload.php";
     public static String Search_College_url = MyURL + "/SearchUniversity.php";
     public static String SearchArea2_url = MyURL + "/searchArea2.php";
+    public static String RegistClass_URL = MyURL + "/RegistClass.php";
+    public static String LoadPersonInfo_URL = MyURL + "/LoadPersonInfo.php";
 }

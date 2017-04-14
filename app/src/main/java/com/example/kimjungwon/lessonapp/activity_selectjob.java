@@ -2,7 +2,6 @@ package com.example.kimjungwon.lessonapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -36,10 +35,10 @@ public class activity_selectjob extends AppCompatActivity implements View.OnClic
         Intent social = getIntent();
 
         if(social.hasExtra("social")){
-            intent = new Intent(getApplicationContext(),activity_Profile.class);
+            intent = new Intent(getApplicationContext(),activity_JOIN_Profile.class);
 
             intent.putExtra("email",social.getStringExtra("email"));
-            intent.putExtra("name",social.getStringExtra("name"));
+            intent.putExtra("User_name",social.getStringExtra("User_name"));
             intent.putExtra("social",social.getStringExtra("social"));
             intent.putExtra("gender",social.getStringExtra("gender"));
             intent.putExtra("birthday",social.getStringExtra("birthday"));

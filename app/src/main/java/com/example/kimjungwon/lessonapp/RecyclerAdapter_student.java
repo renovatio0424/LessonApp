@@ -14,13 +14,13 @@ import java.util.ArrayList;
  * Created by kimjungwon on 2017-02-25.
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.mViewHolder>{
+public class RecyclerAdapter_student extends RecyclerView.Adapter<RecyclerAdapter_student.mViewHolder>{
 
     Context context;
-    private ArrayList<Student> studentList;
+    private ArrayList<People> studentList;
     int item_layout;
     
-    public RecyclerAdapter(Context context, ArrayList<Student> students, int item_layout){
+    public RecyclerAdapter_student(Context context, ArrayList<People> students, int item_layout){
         this.context = context;
         this.studentList = students;
         this.item_layout = item_layout;
@@ -28,16 +28,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.mViewH
     
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.student_card,null);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_student,null);
         
         return new mViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(mViewHolder holder, int position) {
-        Student student = studentList.get(position);
+        Student student = (Student) studentList.get(position);
 
-//        holder.profileImage.setImageURI(Uri.parse(student.getImageURL()));
+//        holder.profileImage.setImageURI(Uri.parse(student.getProfile_image()));
         if(student.getGender().charAt(0) == 'M'){
             holder.profileImage.setImageResource(R.drawable.ic_male_student);
         }else{
@@ -111,7 +111,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.mViewH
     public void addItem(String name, String place, String subject, String fee){
         Student student = new Student();
 
-//        student.setImageURL(URL);
+//        student.setProfile_image(URL);
         student.setName(name);
         student.setAddress(place);
         student.setSubject(subject);

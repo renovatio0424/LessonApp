@@ -50,9 +50,9 @@ import static com.example.kimjungwon.lessonapp.URLconfig.JoinURL;
  * Created by kimjungwon on 2017-03-15.
  */
 
-public class activity_ClassInfo extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, DialogInterface.OnDismissListener {
+public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, DialogInterface.OnDismissListener {
 
-    private static final String TAG = activity_ClassInfo.class.getSimpleName();
+    private static final String TAG = activity_JOIN_ClassInfo.class.getSimpleName();
     private static final int REQUEST_SEARCH_UNIV = 1;
     //subeject 희망과목순위_세부항목
     public Spinner[][] subjects, PlaceSpinner;
@@ -364,18 +364,6 @@ public class activity_ClassInfo extends AppCompatActivity implements View.OnClic
 //        }
 //    }
 
-    public String getETC(Spinner spinner, EditText editText) {
-        String result = null;
-
-        if (spinner.getSelectedItem().equals("기타")) {
-            result = editText.getText().toString();
-        } else {
-            result = spinner.getSelectedItem().toString();
-        }
-
-        return result;
-    }
-
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -397,11 +385,7 @@ public class activity_ClassInfo extends AppCompatActivity implements View.OnClic
                     Toast.makeText(this, "인텐트에 job이 없습니다", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                //과외 가능 지역 체크
-                if (!Check_LessonPlace()) {
-                    Toast.makeText(this, "과외 가능 지역을 다시 확인해주세요", Toast.LENGTH_SHORT).show();
-                    break;
-                }
+
                 //과목 체크
                 if (!Check_hopelesson(getApplicationContext())) {
                     break;
@@ -457,6 +441,11 @@ public class activity_ClassInfo extends AppCompatActivity implements View.OnClic
 //                            Toast.makeText(this, "대학교 이름을 올바르게 입력해주세요!", Toast.LENGTH_SHORT).show();
 //                            break;
 //                        }
+                        //과외 가능 지역 체크
+                        if (!Check_LessonPlace()) {
+                            Toast.makeText(this, "과외 가능 지역을 다시 확인해주세요", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
                         StudentLevel = GET_sb(StudentBox);
                         LessonCategory = lesson_category_spinner.getSelectedItem().toString();
                         schedules = Get_schedule();
@@ -498,7 +487,7 @@ public class activity_ClassInfo extends AppCompatActivity implements View.OnClic
 
                     jo.put("profile_image", imagename);
 
-                    jo.put("name", Data.getStringExtra("name"));
+                    jo.put("name", Data.getStringExtra("User_name"));
                     jo.put("gender", Data.getStringExtra("gender"));
                     jo.put("age", Data.getStringExtra("age"));
                     jo.put("address", Data.getStringExtra("address"));
@@ -539,7 +528,7 @@ public class activity_ClassInfo extends AppCompatActivity implements View.OnClic
                         }
 
                         gomain.putExtra("job", Data.getStringExtra("job"));
-                        gomain.putExtra("name", Data.getStringExtra("name"));
+                        gomain.putExtra("User_name", Data.getStringExtra("User_name"));
 
                         //회원가입 페이지 스택에서 없애기
                         gomain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -698,11 +687,6 @@ public class activity_ClassInfo extends AppCompatActivity implements View.OnClic
             result = "n";
         }
         return result;
-    }
-
-    public Boolean Check_lessontime() {
-//        if()
-        return true;
     }
 
     public Boolean Check_hopelesson(Context context) {
@@ -1679,16 +1663,14 @@ public class activity_ClassInfo extends AppCompatActivity implements View.OnClic
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         Dialog_TimeInsert td = (Dialog_TimeInsert) dialogInterface;
-        String start = td.getStart();
-        String end = td.getEnd();
     }
 
     public void setCustomDialog(final TextView tv) {
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog_TimeInsert td = new Dialog_TimeInsert(activity_ClassInfo.this, "시작 시간과 종료시간을 설정해주세요", "시작시간", "종료시간", tv);
-                td.setOnDismissListener(activity_ClassInfo.this);
+                Dialog_TimeInsert td = new Dialog_TimeInsert(activity_JOIN_ClassInfo.this, "시작 시간과 종료시간을 설정해주세요", "시작시간", "종료시간", tv);
+                td.setOnDismissListener(activity_JOIN_ClassInfo.this);
                 td.show();
             }
         });
@@ -1988,9 +1970,9 @@ public class activity_ClassInfo extends AppCompatActivity implements View.OnClic
             * */
             String encodeImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
 
-            //generate hashMap to store encodedImage and the name
+            //generate hashMap to store encodedImage and the User_name
             HashMap<String, String> detail = new HashMap<>();
-            detail.put("name", name);
+            detail.put("User_name", name);
             detail.put("image", encodeImage);
 
             try {

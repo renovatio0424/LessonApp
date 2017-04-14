@@ -208,14 +208,14 @@ public class activity_JOIN extends AppCompatActivity implements View.OnClickList
 //                }
 
                 //자동으로 로그인 페이지 넘어가기
-                Intent goprofile = new Intent(getApplicationContext(), activity_Profile.class);
+                Intent goprofile = new Intent(getApplicationContext(), activity_JOIN_Profile.class);
                 goprofile.putExtra("id",check_id);
                 goprofile.putExtra("pw",pw1);
                 goprofile.putExtra("job",job.getStringExtra("job"));
 
                 if(job.hasExtra("social")){
                     goprofile.putExtra("email",job.getStringExtra("email"));
-                    goprofile.putExtra("name",job.getStringExtra("name"));
+                    goprofile.putExtra("User_name",job.getStringExtra("User_name"));
                     goprofile.putExtra("social",job.getStringExtra("social"));
                     goprofile.putExtra("gender",job.getStringExtra("gender"));
                     goprofile.putExtra("birthday",job.getStringExtra("birthday"));

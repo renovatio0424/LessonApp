@@ -31,12 +31,11 @@ public class activity_main extends TabActivity{
             Tab1name = "no job";
         }
 
-
         TabHost.TabSpec tabSpecTab1 = tabHost.newTabSpec("TAB1").setIndicator(Tab1name).
                 setContent(new Intent(this, activity_searchpeople.class).
                         putExtra("id",getIntent().getStringExtra("id")).
                         putExtra("job",getIntent().getStringExtra("job")).
-                        putExtra("name",getIntent().getStringExtra("name"))
+                        putExtra("User_name",getIntent().getStringExtra("User_name"))
                 );
         tabHost.addTab(tabSpecTab1);
 
@@ -44,7 +43,7 @@ public class activity_main extends TabActivity{
                 setContent(new Intent(this, activity_ChatList.class).
                         putExtra("id",getIntent().getStringExtra("id")).
                         putExtra("job",getIntent().getStringExtra("job")).
-                        putExtra("name",getIntent().getStringExtra("name"))
+                        putExtra("User_name",getIntent().getStringExtra("User_name"))
                 );
         tabHost.addTab(tabSpecTab2);
 
@@ -52,7 +51,7 @@ public class activity_main extends TabActivity{
                 setContent(new Intent(this, activity_mypage.class).
                         putExtra("id",getIntent().getStringExtra("id")).
                         putExtra("job",getIntent().getStringExtra("job")).
-                        putExtra("name",getIntent().getStringExtra("name"))
+                        putExtra("User_name",getIntent().getStringExtra("User_name"))
                 );
         tabHost.addTab(tabSpecTab3);
 

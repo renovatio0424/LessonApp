@@ -7,6 +7,9 @@
 
     <!-- network 상태를 미리 체크하여 연결 안된 경우 다이얼로그를 보여주려면 아래 permission 추가 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -23,9 +26,9 @@
         </activity>
         <activity android:name=".activity_JOIN"></activity>
         <activity android:name=".activity_selectjob"></activity>
-        <activity android:name=".activity_Profile"></activity>
+        <activity android:name=".activity_JOIN_Profile"></activity>
         <activity android:name=".activity_SelectArea"></activity>
-        <activity android:name=".activity_ClassInfo"></activity>
+        <activity android:name=".activity_JOIN_ClassInfo"></activity>
         <activity android:name=".activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <!--크롭액티비티-->
@@ -44,6 +47,9 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activity_detailedsearch"></activity>
         <activity android:name=".activity_searchUniversity"></activity>
+        <activity android:name=".activity_Info_Class"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activity_regist_class"></activity>
         <!-- [naveroauthlogin][end] -->
         <activity
             android:name=".activity_searchpeople"
@@ -52,6 +58,16 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>

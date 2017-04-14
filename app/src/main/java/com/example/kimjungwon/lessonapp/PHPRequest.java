@@ -45,7 +45,7 @@ public class PHPRequest {
     }
 
     public String PHPJOIN(final String id, final String name, final String pw) {
-        String postData = "id=" + id + "&" + "name=" + name + "&" + "pw=" + pw;
+        String postData = "id=" + id + "&" + "User_name=" + name + "&" + "pw=" + pw;
         try {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
