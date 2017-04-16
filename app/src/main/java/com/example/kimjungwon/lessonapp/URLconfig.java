@@ -16,4 +16,5 @@ public class URLconfig {
     public static String SearchArea2_url = MyURL + "/searchArea2.php";
     public static String RegistClass_URL = MyURL + "/RegistClass.php";
     public static String LoadPersonInfo_URL = MyURL + "/LoadPersonInfo.php";
+    public static String ImageLoad_URL = MyURL + "/uploads/";
 }

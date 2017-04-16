@@ -1972,7 +1972,7 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
 
             //generate hashMap to store encodedImage and the User_name
             HashMap<String, String> detail = new HashMap<>();
-            detail.put("User_name", name);
+            detail.put("name", name);
             detail.put("image", encodeImage);
 
             try {

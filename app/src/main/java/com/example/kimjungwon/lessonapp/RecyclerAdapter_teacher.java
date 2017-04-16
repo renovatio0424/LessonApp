@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import static com.example.kimjungwon.lessonapp.URLconfig.ImageLoad_URL;
 import static com.example.kimjungwon.lessonapp.URLconfig.MyURL;
 
 /**
@@ -36,7 +37,7 @@ public class RecyclerAdapter_teacher extends RecyclerView.Adapter<RecyclerAdapte
 
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_lesson,null);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_lesson,parent,false);
 
         return new mViewHolder(v);
     }
@@ -49,6 +50,8 @@ public class RecyclerAdapter_teacher extends RecyclerView.Adapter<RecyclerAdapte
 
 
         Log.d(TAG,"profileimg: " + teacher.getProfile_image());
+
+        //프로필 이미지
         if(teacher.getProfile_image().equals("null")){
             if(teacher.getGender().charAt(0) == 'M'){
 //                Glide.with(context).load(R.drawable.ic_male_student).into(holder.profileimg_teacher);
@@ -58,14 +61,19 @@ public class RecyclerAdapter_teacher extends RecyclerView.Adapter<RecyclerAdapte
                 holder.profileimg_teacher.setImageResource(R.drawable.ic_female_student);
             }
         }else{
-            Glide.with(context).load(teacher.getProfile_image()).into(holder.profileimg_teacher);
+//            MyURL+"/uploads/naeun@naver.com_1492222678.jpg";
+            Glide.with(context).load(MyURL + teacher.getProfile_image()).into(holder.profileimg_teacher);
+            Log.d(TAG,"profile URL: " + MyURL + teacher.getProfile_image());
         }
 
+        //배경 이미지
         holder.lesson_background.setColorFilter(Color.argb(99, 00, 00, 00));
+
         if(lesson.getLesson_Background_Image().equals("null")){
             Glide.with(context).load(R.drawable.background_test).centerCrop().into(holder.lesson_background);
         }else {
-            Glide.with(context).load(MyURL + "/uploads/" + lesson.getLesson_Background_Image()).centerCrop().into(holder.lesson_background);
+            Glide.with(context).load(MyURL + lesson.getLesson_Background_Image()).centerCrop().into(holder.lesson_background);
+            Log.d(TAG,"background URL: " + MyURL + lesson.getLesson_Background_Image());
         }
 
         holder.Name_teacher.setText(teacher.getName());
@@ -80,9 +88,11 @@ public class RecyclerAdapter_teacher extends RecyclerView.Adapter<RecyclerAdapte
         for(int i = 0 ; i < teacher.getLessonPlace().size() ; i++){
             place += teacher.getLessonPlace().get(i) + "\n";
         }
+
+        holder.collge_name.setText(teacher.getCollegeName());
+
 //        holder.Lesson_Place.setText(place);
-        String fee = "주" + teacher.getFee().get(0) + "회" +
-                teacher.getFee().get(1) + "시간" +
+        String fee = "주" + teacher.getFee().get(0) + "회 " +
                 teacher.getFee().get(2) +"만원";
         holder.Lesson_Fee.setText(fee);
         holder.Lesson_Subject.setText(lesson.getLesson_Subject());
@@ -92,7 +102,7 @@ public class RecyclerAdapter_teacher extends RecyclerView.Adapter<RecyclerAdapte
 
     public class mViewHolder extends RecyclerView.ViewHolder{
         ImageView profileimg_teacher,lesson_background;
-        TextView Name_teacher, Lesson_Title, Lesson_Subject, Lesson_Place, Lesson_Fee, Review_count;
+        TextView Name_teacher, Lesson_Title, Lesson_Subject, collge_name, Lesson_Fee, Review_count;
 //        int height,width;
         public mViewHolder(View itemView) {
             super(itemView);
@@ -107,7 +117,7 @@ public class RecyclerAdapter_teacher extends RecyclerView.Adapter<RecyclerAdapte
             Name_teacher = (TextView) itemView.findViewById(R.id.name_tc);
             Lesson_Title = (TextView) itemView.findViewById(R.id.lesson_title);
             Lesson_Subject = (TextView) itemView.findViewById(R.id.lesson_subject);
-            Lesson_Place = (TextView) itemView.findViewById(R.id.lesson_place);
+            collge_name = (TextView) itemView.findViewById(R.id.college_name);
             Lesson_Fee = (TextView) itemView.findViewById(R.id.lesson_fee);
             Review_count = (TextView) itemView.findViewById(R.id.review_count);
             lesson_background = (ImageView) itemView.findViewById(R.id.lesson_background);

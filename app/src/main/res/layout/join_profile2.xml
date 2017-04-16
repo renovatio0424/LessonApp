@@ -14,20 +14,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <ImageView
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:maxWidth="200dp"
-                android:maxHeight="200dp"
-                android:minHeight="150dp"
-                android:minWidth="150dp"
-                android:layout_height="wrap_content"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:background="@drawable/ic_user"
-                android:id="@+id/ProfileImg"
-                android:adjustViewBounds="true"
+                android:layout_margin="8dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                app:civ_fill_color="#FFFFFF"
                 android:layout_gravity="center"
-                />
+                android:foregroundGravity="bottom|center_horizontal"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
+                android:id="@+id/ProfileImg" />
 
             <TableLayout
                 android:layout_width="match_parent"

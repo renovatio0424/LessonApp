@@ -1,5 +1,6 @@
 package com.example.kimjungwon.lessonapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -7,7 +8,7 @@ import java.util.StringTokenizer;
  * Created by kimjungwon on 2017-04-12.
  */
 
-public class Teacher extends People{
+public class Teacher extends People implements Serializable{
     private Lesson lesson;
     private String CollegeName,lessoncategory;
     private ArrayList<String>LessonPlace,schedule;

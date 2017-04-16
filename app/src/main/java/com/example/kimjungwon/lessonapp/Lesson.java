@@ -1,5 +1,6 @@
 package com.example.kimjungwon.lessonapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -7,7 +8,7 @@ import java.util.StringTokenizer;
  * Created by kimjungwon on 2017-04-12.
  */
 
-public class Lesson {
+public class Lesson implements Serializable{
     private String Lesson_Title;
     private String Lesson_Background_Image;
     private ArrayList<String> studentlevel;
@@ -32,7 +33,7 @@ public class Lesson {
     }
 
     public void setLesson_Subject(String lesson_Subject) {
-        Lesson_Subject = lesson_Subject;
+        Lesson_Subject = lesson_Subject.substring(1);
     }
 
     public void setLesson_Title(String lesson_Title) {

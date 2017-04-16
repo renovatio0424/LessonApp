@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:background="#00000000"
@@ -11,17 +11,18 @@
         app:cardCornerRadius="8dp"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="224dp">
+        android:layout_height="wrap_content">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
+                android:background="@drawable/background_test"
                 android:tint="#99000000"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="250dp"
                 android:id="@+id/lesson_background" />
         </FrameLayout>
 
@@ -36,20 +37,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@mipmap/ic_launcher"
-                    android:id="@+id/profile_img_tc"/>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/ic_launcher"
+                    app:civ_fill_color="#FFFFFF"
+                    android:foregroundGravity="bottom|center_horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/profile_img_tc" />
 
                 <TextView
+                    android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:layout_marginLeft="10dp"
                     android:text="Name"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/name_tc"
-                    android:layout_weight="1" />
+                    android:id="@+id/name_tc" />
 
             </LinearLayout>
 
@@ -57,7 +63,7 @@
                 android:background="#00000000"
                 android:textColor="@color/White"
                 android:textStyle="bold"
-                android:textSize="15dp"
+                android:textSize="20dp"
                 android:layout_marginTop="10dp"
                 android:text="Lesson Title"
                 android:layout_width="match_parent"
@@ -75,10 +81,10 @@
             <TextView
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="10dp"
-                android:text="Lesson Place"
+                android:text="College Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/lesson_place" />
+                android:id="@+id/college_name" />
 
             <TextView
                 android:textColor="#FFFFFF"
@@ -97,27 +103,47 @@
                 android:id="@+id/textView50" />
 
             <LinearLayout
+                android:layout_gravity="right"
                 android:background="#00000000"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:background="#00000000"
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:text="후기"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_review"
-                    android:id="@+id/imageView10" />
+                    android:id="@+id/textView55"
+                    android:layout_weight="1" />
 
                 <TextView
                     android:background="#00000000"
                     android:textColor="#FFFFFF"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="8dp"
                     android:text="Review count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/review_count"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_marginLeft="8dp"
+                    android:textColor="#FFFFFF"
+                    android:text="조회수"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView57"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_marginLeft="8dp"
+                    android:text="24"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hits"
                     android:layout_weight="1" />
 
             </LinearLayout>

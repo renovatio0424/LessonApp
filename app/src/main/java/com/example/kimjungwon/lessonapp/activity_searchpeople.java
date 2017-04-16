@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -321,40 +321,39 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
                                 for (int i = 0; i < ja.length(); i++) {
                                     JSONObject jo2 = ja.getJSONObject(i);
-                                    String name = jo2.getString("name");
-                                    String gender = jo2.getString("gender");
-                                    String profile_image = jo2.getString("profile_image");
-                                    String address = jo2.getString("address");
-                                    String LessonFee = jo2.getString("LessonFee");
-                                    String LessonSubject = jo2.getString("LessonSubject");
-                                    String dealpossible = jo2.getString("deal_possible");
-                                    String intro = jo2.getString("intro");
-                                    String reg_date = jo2.getString("reg_date");
-                                    String last_connect_date = jo2.getString("last_connect_date");
-
-                                    //선생님 추가 정보
-                                    String CollegeName = jo2.getString("CollegeName");
-                                    String lessoncategory = jo2.getString("lessoncategory");
-                                    String lessonplace = jo2.getString("lessonplace");
-                                    String schedule = jo2.getString("schedule");
-
-
-                                    Lesson lesson = new Lesson();
-                                    JSONObject lessonjson = jo2.getJSONObject("lesson");
-                                    String lessontitle = lessonjson.getString("title");
-                                    String background_img = lessonjson.getString("lessonbackground");
-                                    String studentlevel = lessonjson.getString("studentlevel");
-                                    String lessonsb = lessonjson.getString("lessonsubject");
-                                    String lessonintro = lessonjson.getString("intro");
-                                    String lesson_reg_date = lessonjson.getString("reg_date");
-                                    int hits = lessonjson.getInt("hits");
-
+                                    String lessontitle = jo2.getString("title");
+                                    String background_img = jo2.getString("lessonbackground");
+                                    String studentlevel = jo2.getString("studentlevel");
+                                    String lessonsb = jo2.getString("lessonsubject");
+                                    String lessonintro = jo2.getString("intro");
+                                    String lesson_reg_date = jo2.getString("reg_date");
+                                    int hits = jo2.getInt("hits");
                                     Boolean recruiting = false;
-
-                                    if(lessonjson.get("recruiting").equals("true")){
+                                    if(jo2.get("recruiting").equals("true")){
                                         recruiting = true;
                                     }
 
+
+                                    JSONObject teacher_json = jo2.getJSONObject("teacher");
+                                    String name = teacher_json.getString("name");
+                                    String gender = teacher_json.getString("gender");
+                                    String profile_image = teacher_json.getString("profile_image");
+                                    String address = teacher_json.getString("address");
+                                    String LessonFee = teacher_json.getString("LessonFee");
+                                    String LessonSubject = teacher_json.getString("LessonSubject");
+                                    String dealpossible = teacher_json.getString("deal_possible");
+                                    String intro = teacher_json.getString("intro");
+                                    String reg_date = teacher_json.getString("reg_date");
+                                    String last_connect_date = teacher_json.getString("last_connect_date");
+
+                                    //선생님 추가 정보
+                                    String CollegeName = teacher_json.getString("CollegeName");
+                                    String lessoncategory = teacher_json.getString("lessoncategory");
+                                    String lessonplace = teacher_json.getString("lessonplace");
+                                    String schedule = teacher_json.getString("schedule");
+
+
+                                    Lesson lesson = new Lesson();
 
                                     lesson.setLesson_Title(lessontitle);
                                     lesson.setLesson_Background_Image(background_img);
@@ -455,7 +454,6 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
         sort_search.setText(sortmethod + " ▼");
         Toast.makeText(this, "sortmethod: " + st, Toast.LENGTH_SHORT).show();
     }
-
 
     //    private void init_list() {
 //        //list 받아오기
@@ -678,15 +676,12 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        private boolean isLoading = true;
-
-        LinearLayoutManager layoutManager;
-
         RecyclerView recyclerView;
         RecyclerAdapter_student recyclerAdapterStudent;
         RecyclerAdapter_teacher recyclerAdapter_teacher;
 
-
+        GridLayoutManager layoutManager1;
+        LinearLayoutManager layoutManager2;
         public PlaceholderFragment() {
         }
 
@@ -735,18 +730,22 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
             if (User_job.equals("student")) {
                 recyclerAdapter_teacher = new RecyclerAdapter_teacher(getContext(), list, R.layout.card_lesson);
                 recyclerAdapter_teacher.notifyDataSetChanged();
-                layoutManager = new GridLayoutManager(getContext(), 2);
-                layoutManager.setOrientation(GridLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(layoutManager);
+
+                layoutManager2 = new LinearLayoutManager(getContext());
+                recyclerView.setLayoutManager(layoutManager2);
                 recyclerView.setAdapter(recyclerAdapter_teacher);
+                recyclerView.addOnScrollListener(infiniteScrollListener2());
+
 
             } else if (User_job.equals("teacher")) {
                 recyclerAdapterStudent = new RecyclerAdapter_student(getContext(), list, R.layout.card_student);
                 recyclerAdapterStudent.notifyDataSetChanged();
-                layoutManager = new GridLayoutManager(getContext(), 2);
-                layoutManager.setOrientation(GridLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(layoutManager);
+
+                layoutManager1 = new GridLayoutManager(getContext(), 2);
+                layoutManager1.setOrientation(GridLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(layoutManager1);
                 recyclerView.setAdapter(recyclerAdapterStudent);
+                recyclerView.addOnScrollListener(infiniteScrollListener1());
             }
 
 //            }
@@ -759,12 +758,13 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 //            layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 //            layoutManager.setOrientation(StaggeredGridLayoutManager.VERTICAL);
 
-            recyclerView.addOnScrollListener(infiniteScrollListener());
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
                     Toast.makeText(getContext(), "index" + position + "User_name: " + list.get(position).getName(), Toast.LENGTH_SHORT).show();
                     Intent goInfoClass = new Intent(getContext(),activity_Info_Class.class);
+                    goInfoClass.putExtra("person", list.get(position));
+                    goInfoClass.putExtra("job",User_job);
                     startActivity(goInfoClass);
                 }
 
@@ -809,15 +809,11 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
             return rootView;
         }
 
-        private InfiniteScrollListener infiniteScrollListener() {
-            return new InfiniteScrollListener(10, layoutManager) {
+        private InfiniteScrollListener infiniteScrollListener1() {
+            return new InfiniteScrollListener(10, layoutManager1) {
                 @Override
                 public void onScrolledToEnd(int firstVisibleItemPosition) {
                     Log.d("onScrolledToEnd", "called!!!!!!!!");
-//                    String area = BarTitle.getText().toString().replace(" ▼","");
-//                    if(area.equals("지역 선택")){
-//                        area = area.replace("지역 선택","");
-//                    }
 
                     int section = getArguments().getInt(ARG_SECTION_NUMBER);
 
@@ -833,7 +829,46 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
                         for (int i = 0; i < Total_list.get(section).size(); i++) {
                             People pp = Total_list.get(section).get(i);
-                            Log.d("LoadMoreStudents", "User_name: " + pp.getName());
+                            Log.d("LoadMoreStudents111", "User_name: " + pp.getName());
+                        }
+                        if(User_job.equals("student")){
+                            refreshView(recyclerView,
+                                    new RecyclerAdapter_teacher(getContext(), Total_list.get(section), R.layout.card_lesson),
+                                    firstVisibleItemPosition);
+                        }else if(User_job.equals("teacher")){
+                            refreshView(recyclerView,
+                                    new RecyclerAdapter_student(getContext(), Total_list.get(section), R.layout.card_student),
+                                    firstVisibleItemPosition);
+                        }
+
+
+                        Current_pages[section]++;
+                    }
+                }
+            };
+        }
+
+        private InfiniteScrollListener infiniteScrollListener2() {
+            return new InfiniteScrollListener(10, layoutManager2) {
+                @Override
+                public void onScrolledToEnd(int firstVisibleItemPosition) {
+                    Log.d("onScrolledToEnd", "called!!!!!!!!");
+
+                    int section = getArguments().getInt(ARG_SECTION_NUMBER);
+
+                    String subject = subjects[section];
+                    int page = Current_pages[section] + 1;
+
+                    ArrayList<People> NewList = LoadMoreStudents(area_title, subject, page);
+
+                    if (NewList.isEmpty()) {
+                        Toast.makeText(getContext(), "등록된 학생이 없습니다", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Total_list.get(section).addAll(NewList);
+
+                        for (int i = 0; i < Total_list.get(section).size(); i++) {
+                            People pp = Total_list.get(section).get(i);
+                            Log.d("LoadMoreStudents222", "User_name: " + pp.getName());
                         }
                         if(User_job.equals("student")){
                             refreshView(recyclerView,
@@ -1015,38 +1050,9 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                     String reg_date = jo2.getString("reg_date");
                     String last_connect_date = jo2.getString("last_connect_date");
 
-                    //선생님 추가 정보
-                    String CollegeName = jo2.getString("CollegeName");
-                    String lessoncategory = jo2.getString("lessoncategory");
-                    String lessonplace = jo2.getString("lessonplace");
-                    String schedule = jo2.getString("schedule");
+                    String teacher_age = jo2.getString("teacher_age");
+                    String teacher_gender = jo2.getString("teacher_gender");
 
-
-                    Lesson lesson = new Lesson();
-                    JSONObject lessonjson = jo2.getJSONObject("lesson");
-                    String lessontitle = lessonjson.getString("title");
-                    String background_img = lessonjson.getString("lessonbackground");
-                    String studentlevel = lessonjson.getString("studentlevel");
-                    String lessonsb = lessonjson.getString("lessonsubject");
-                    String lessonintro = lessonjson.getString("intro");
-                    String lesson_reg_date = lessonjson.getString("reg_date");
-                    int hits = lessonjson.getInt("hits");
-
-                    Boolean recruiting = false;
-
-                    if(lessonjson.get("recruiting").equals("true")){
-                        recruiting = true;
-                    }
-
-
-                    lesson.setLesson_Title(lessontitle);
-                    lesson.setLesson_Background_Image(background_img);
-                    lesson.setStudentlevel(studentlevel);
-                    lesson.setLesson_Subject(lessonsb);
-                    lesson.setIntro(lessonintro);
-                    lesson.setReg_date(lesson_reg_date);
-                    lesson.setHits(hits);
-                    lesson.setRecruiting(recruiting);
                     Log.d("student", "" + Subject + ")" +
                             " name: " + name +
                             " gender: " + gender +
@@ -1059,62 +1065,58 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             " reg_date: " + reg_date +
                             " last_connect_date: " + last_connect_date);
 
-                    Teacher teacher = new Teacher();
-                    teacher.setName(name);
-                    teacher.setGender(gender);
-                    teacher.setProfile_image(profile_image);
-                    teacher.setAddress(address);
-                    teacher.setFee(LessonFee);
-                    teacher.setSubject(LessonSubject);
-                    teacher.setDealpossible(dealpossible);
-                    teacher.setIntro(intro);
-                    teacher.setReg_date(reg_date);
-                    teacher.setLast_connect_date(last_connect_date);
+                    Student st = new Student();
+                    st.setName(name);
+                    st.setGender(gender);
+                    st.setProfile_image(profile_image);
+                    st.setAddress(address);
+                    st.setFee(LessonFee);
+                    st.setSubject(LessonSubject);
+                    st.setDealpossible(dealpossible);
+                    st.setIntro(intro);
+                    st.setReg_date(reg_date);
+                    st.setLast_connect_date(last_connect_date);
 
-                    teacher.setCollegeName(CollegeName);
-                    teacher.setLessoncategory(lessoncategory);
-                    teacher.setLessonPlace(lessonplace);
-                    teacher.setSchedule(schedule);
-                    teacher.setLesson(lesson);
+                    st.setTeacher_age(teacher_age);
+                    st.setTeacher_gender(teacher_gender);
 
-                    resultlist.add(teacher);
+                    resultlist.add(st);
                 }
                 //사용자가 학생일 경우 -> 선생님 양식에 맞게 담기
                 else if(User_job.equals("student")){
-                    String name = jo2.getString("name");
-                    String gender = jo2.getString("gender");
-                    String profile_image = jo2.getString("profile_image");
-                    String address = jo2.getString("address");
-                    String LessonFee = jo2.getString("LessonFee");
-                    String LessonSubject = jo2.getString("LessonSubject");
-                    String dealpossible = jo2.getString("deal_possible");
-                    String intro = jo2.getString("intro");
-                    String reg_date = jo2.getString("reg_date");
-                    String last_connect_date = jo2.getString("last_connect_date");
-
-                    //선생님 추가 정보
-                    String CollegeName = jo2.getString("CollegeName");
-                    String lessoncategory = jo2.getString("lessoncategory");
-                    String lessonplace = jo2.getString("lessonplace");
-                    String schedule = jo2.getString("schedule");
-
-
-                    Lesson lesson = new Lesson();
-                    JSONObject lessonjson = jo2.getJSONObject("lesson");
-                    String lessontitle = lessonjson.getString("title");
-                    String background_img = lessonjson.getString("lessonbackground");
-                    String studentlevel = lessonjson.getString("studentlevel");
-                    String lessonsb = lessonjson.getString("lessonsubject");
-                    String lessonintro = lessonjson.getString("intro");
-                    String lesson_reg_date = lessonjson.getString("reg_date");
-                    int hits = lessonjson.getInt("hits");
-
+                    String lessontitle = jo2.getString("title");
+                    String background_img = jo2.getString("lessonbackground");
+                    String studentlevel = jo2.getString("studentlevel");
+                    String lessonsb = jo2.getString("LessonSubject");
+                    String lessonintro = jo2.getString("intro");
+                    String lesson_reg_date = jo2.getString("reg_date");
+                    int hits = jo2.getInt("hits");
                     Boolean recruiting = false;
-
-                    if(lessonjson.get("recruiting").equals("true")){
+                    if(jo2.get("recruiting").equals("true")){
                         recruiting = true;
                     }
 
+
+                    JSONObject teacher_json = jo2.getJSONObject("teacher");
+                    String name = teacher_json.getString("name");
+                    String gender = teacher_json.getString("gender");
+                    String profile_image = teacher_json.getString("profile_image");
+                    String address = teacher_json.getString("address");
+                    String LessonFee = teacher_json.getString("LessonFee");
+                    String LessonSubject = teacher_json.getString("LessonSubject");
+                    String dealpossible = teacher_json.getString("deal_possible");
+                    String intro = teacher_json.getString("intro");
+                    String reg_date = teacher_json.getString("reg_date");
+                    String last_connect_date = teacher_json.getString("last_connect_date");
+
+                    //선생님 추가 정보
+                    String CollegeName = teacher_json.getString("CollegeName");
+                    String lessoncategory = teacher_json.getString("lessoncategory");
+                    String lessonplace = teacher_json.getString("lessonplace");
+                    String schedule = teacher_json.getString("schedule");
+
+
+                    Lesson lesson = new Lesson();
 
                     lesson.setLesson_Title(lessontitle);
                     lesson.setLesson_Background_Image(background_img);
@@ -1272,39 +1274,39 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
                         for (int i = 0; i < ja.length(); i++) {
                             JSONObject jo2 = ja.getJSONObject(i);
-                            String name = jo2.getString("name");
-                            String gender = jo2.getString("gender");
-                            String profile_image = jo2.getString("profile_image");
-                            String address = jo2.getString("address");
-                            String LessonFee = jo2.getString("LessonFee");
-                            String LessonSubject = jo2.getString("LessonSubject");
-                            String dealpossible = jo2.getString("deal_possible");
-                            String intro = jo2.getString("intro");
-                            String reg_date = jo2.getString("reg_date");
-                            String last_connect_date = jo2.getString("last_connect_date");
+                            String lessontitle = jo2.getString("title");
+                            String background_img = jo2.getString("lessonbackground");
+                            String studentlevel = jo2.getString("studentlevel");
+                            String lessonsb = jo2.getString("LessonSubject");
+                            String lessonintro = jo2.getString("intro");
+                            String lesson_reg_date = jo2.getString("reg_date");
+                            int hits = jo2.getInt("hits");
+                            Boolean recruiting = false;
+                            if(jo2.get("recruiting").equals("true")){
+                                recruiting = true;
+                            }
+
+
+                            JSONObject teacher_json = jo2.getJSONObject("teacher");
+                            String name = teacher_json.getString("name");
+                            String gender = teacher_json.getString("gender");
+                            String profile_image = teacher_json.getString("profile_image");
+                            String address = teacher_json.getString("address");
+                            String LessonFee = teacher_json.getString("LessonFee");
+                            String LessonSubject = teacher_json.getString("LessonSubject");
+                            String dealpossible = teacher_json.getString("deal_possible");
+                            String intro = teacher_json.getString("intro");
+                            String reg_date = teacher_json.getString("reg_date");
+                            String last_connect_date = teacher_json.getString("last_connect_date");
 
                             //선생님 추가 정보
-                            String CollegeName = jo2.getString("CollegeName");
-                            String lessoncategory = jo2.getString("lessoncategory");
-                            String lessonplace = jo2.getString("lessonplace");
-                            String schedule = jo2.getString("schedule");
+                            String CollegeName = teacher_json.getString("CollegeName");
+                            String lessoncategory = teacher_json.getString("lessoncategory");
+                            String lessonplace = teacher_json.getString("lessonplace");
+                            String schedule = teacher_json.getString("schedule");
 
 
                             Lesson lesson = new Lesson();
-                            JSONObject lessonjson = jo2.getJSONObject("lesson");
-                            String lessontitle = lessonjson.getString("title");
-                            String background_img = lessonjson.getString("lessonbackground");
-                            String studentlevel = lessonjson.getString("studentlevel");
-                            String lessonsb = lessonjson.getString("lessonsubject");
-                            String lessonintro = lessonjson.getString("intro");
-                            String lesson_reg_date = lessonjson.getString("reg_date");
-                            int hits = lessonjson.getInt("hits");
-
-                            Boolean recruiting = false;
-
-                            if(lessonjson.get("recruiting").equals("true")){
-                                recruiting = true;
-                            }
 
 
                             lesson.setLesson_Title(lessontitle);

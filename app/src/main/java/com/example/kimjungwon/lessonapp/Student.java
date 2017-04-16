@@ -2,6 +2,7 @@ package com.example.kimjungwon.lessonapp;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -9,7 +10,7 @@ import java.util.StringTokenizer;
  * Created by kimjungwon on 2017-02-25.
  */
 
-public class Student extends People{
+public class Student extends People implements Serializable{
 
     String teacher_age,teacher_gender;
 

@@ -818,6 +818,7 @@ public class activity_JOIN_Profile extends AppCompatActivity implements View.OnC
                     CropImage.ActivityResult result = CropImage.getActivityResult(data);
                     Uri resultUri = result.getUri();
 //                    backgroundimg.setImageURI(resultUri);
+                    profileimg.setBackgroundResource(R.color.Transparent);
                     Glide.with(this).load(resultUri).into(profileimg);
                     imageUri = resultUri.toString();
                     Log.d(TAG, "CROP OK \nresultUri: " + resultUri);

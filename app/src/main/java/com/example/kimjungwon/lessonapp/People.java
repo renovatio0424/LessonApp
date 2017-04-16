@@ -1,5 +1,9 @@
 package com.example.kimjungwon.lessonapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -7,7 +11,7 @@ import java.util.StringTokenizer;
  * Created by kimjungwon on 2017-04-12.
  */
 
-public class People {
+public class People implements Serializable{
     private String Name;
     private String Gender;
     private String profile_image;
@@ -114,4 +118,5 @@ public class People {
     public String getIntro() {
         return intro;
     }
+
 }

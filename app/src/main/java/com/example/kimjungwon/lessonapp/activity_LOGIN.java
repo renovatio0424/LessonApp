@@ -240,7 +240,6 @@ public class activity_LOGIN extends AppCompatActivity implements View.OnClickLis
                             goMain.putExtra("User_name",jsonObject.getString("name"));
                             goMain.putExtra("job",jsonObject.getString("job"));
                             //이번에 생긴 로그인 페이지는 스택에 쌓이지 않는당
-                            goMain.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                             startActivity(goMain);
                             finish();
                         }

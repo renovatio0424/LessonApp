@@ -263,7 +263,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
 
                 //4. 과외 과목
                 if(check_lessons(lesson_spinner)){
-                    result_lesson = GetLesson(lesson_spinner);
+                    result_lesson = "@" + GetLesson(lesson_spinner);
                 }else{
                     Toast.makeText(this, "과외 과목을 선택해주세요", Toast.LENGTH_SHORT).show();
                 }
@@ -310,7 +310,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
                         "\nstudent: " + result_student +
                         "\nsubject: " + result_lesson +
                         "\nintro: " + result_intro);
-
+                finish();
                 break;
             case R.id.regist_lesson_background:
                 DialogInterface.OnClickListener CameraListener = new DialogInterface.OnClickListener() {
