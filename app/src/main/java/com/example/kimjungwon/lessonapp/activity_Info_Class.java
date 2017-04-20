@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import static com.example.kimjungwon.lessonapp.URLconfig.MyURL;
 
@@ -157,20 +158,44 @@ public class activity_Info_Class extends AppCompatActivity {
             int page = getArguments().getInt(ARG_SECTION_NUMBER);
 
             switch (page){
+//                수업 정보
                 case 1:
                     rootView = inflater.inflate(R.layout.fragment_classinfo, container, false);
                     TextView studentlevel = (TextView) rootView.findViewById(R.id.info_studentlevel);
                     TextView info_intro = (TextView) rootView.findViewById(R.id.info_intro);
+                    TextView lessonsubject =(TextView) rootView.findViewById(R.id.info_lessonsubject);
+                    TextView lessonfee = (TextView) rootView.findViewById(R.id.info_lessonfee);
+
                     ArrayList<String> levels = ((Teacher)person).getLesson().getStudentlevel();
                     String level = ArrayListToString(levels);
                     studentlevel.setText(level);
+
                     String intro = ((Teacher)person).getLesson().getIntro();
                     info_intro.setText(intro);
+
+                    String fee = ArrayListToFee(((Teacher)person).getFee());
+                    lessonfee.setText(fee);
+
+                    String subject = ArrayListToString(((Teacher)person).getLesson().getLesson_Subject());
+                    lessonsubject.setText(subject);
+
+                    String schedule = "";
+                    for(int i = 0 ; i < ((Teacher)person).getSchedule().size() ; i++){
+                        schedule += ((Teacher)person).getSchedule().get(i);
+                        if(i != ((Teacher)person).getSchedule().size() - 1){
+                            schedule += "\n";
+                        }
+                    }
+
+                    TextView Schedule = (TextView) rootView.findViewById(R.id.info_schedule);
+                    Schedule.setText(schedule);
                     break;
+//                선생님 정보
                 case 2:
                     rootView = inflater.inflate(R.layout.fragment_teacherinfo, container,false);
                     TextView genderview = (TextView) rootView.findViewById(R.id.info_gender);
-                    genderview.setText(((Teacher)person).getGender());
+                    String gender = ((Teacher)person).getGender().equals("M") ? "남자" : "여자";
+                    genderview.setText(gender);
 
                     TextView lpview = (TextView) rootView.findViewById(R.id.info_lessonplace);
                     ArrayList<String> lps = ((Teacher)person).getLessonPlace();
@@ -182,7 +207,11 @@ public class activity_Info_Class extends AppCompatActivity {
 
                     TextView tc_intro_view = (TextView) rootView.findViewById(R.id.info_tc_intro);
                     tc_intro_view.setText(((Teacher)person).getIntro());
+
+                    TextView ageview = (TextView) rootView.findViewById(R.id.info_age);
+                    ageview.setText(((Teacher)person).getAge());
                     break;
+//                후기
                 case 3:
                     rootView = inflater.inflate(R.layout.fragment_review,container,false);
                     break;
@@ -200,6 +229,11 @@ public class activity_Info_Class extends AppCompatActivity {
             result += list.get(i) + "\n";
         }
         return result;
+    }
+
+    public static String ArrayListToFee(ArrayList<String> list){
+        String result = "주 " + list.get(0) + "회 " + list.get(1) + "시간 " + list.get(2) + "만원";
+        return result ;
     }
 
     /**

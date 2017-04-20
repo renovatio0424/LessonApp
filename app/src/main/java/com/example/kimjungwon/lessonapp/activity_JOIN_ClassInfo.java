@@ -97,7 +97,7 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
     TextView bytelength_st;
 
     //선생님
-    TableLayout placetable;
+    TableLayout placetable,LessonFeeLayout;
     CheckBox[] StudentBox;
     EditText multiText_tc;
     TextView bytelength_tc,search_univ_view;
@@ -276,6 +276,8 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
         search_univ_view = (TextView) findViewById(R.id.univ_search_view);
         search_univ_view.setOnClickListener(this);
 
+
+
         //추가입력 학생
         tg_spinner = (Spinner) findViewById(R.id.tgender);
         tage1 = (EditText) findViewById(R.id.tage1);
@@ -333,11 +335,14 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
                 StudentForm.setVisibility(View.GONE);
                 placetable.setVisibility(View.VISIBLE);
                 collegeRow.setVisibility(View.VISIBLE);
+                LessonFeeLayout = (TableLayout) findViewById(R.id.LessonFeeLayout);
+                LessonFeeLayout.setVisibility(View.GONE);
             } else if (Data.getStringExtra("job").equals("student")) {
                 TeacherForm.setVisibility(View.GONE);
                 StudentForm.setVisibility(View.VISIBLE);
                 placetable.setVisibility(View.GONE);
                 collegeRow.setVisibility(View.GONE);
+                LessonFeeLayout.setVisibility(View.VISIBLE);
             }
         } else {
             Toast.makeText(this, "직업이 없음", Toast.LENGTH_SHORT).show();
@@ -375,11 +380,15 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
                 break;
 
             case R.id.next_btn:
-                //과외비 체크
-                if (!Check_lessonfee(getApplicationContext())) {
-                    Toast.makeText(this, "희망 과외 비용을 다시 입력해주세요", Toast.LENGTH_SHORT).show();
-                    break;
+
+                if(Data.getStringExtra("job").equals("student")){
+                    //과외비 체크
+                    if (!Check_lessonfee(getApplicationContext())) {
+                        Toast.makeText(this, "희망 과외 비용을 다시 입력해주세요", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                 }
+                
                 //직업 체크
                 if (!Data.hasExtra("job")) {
                     Toast.makeText(this, "인텐트에 job이 없습니다", Toast.LENGTH_SHORT).show();
@@ -792,6 +801,17 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
                         android.R.layout.simple_spinner_dropdown_item,
                         getResources().getStringArray(R.array.nosubsection_array));
                 spinner.setAdapter(adapter);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
+                    }
+                });
                 break;
             //국어
             case 1:

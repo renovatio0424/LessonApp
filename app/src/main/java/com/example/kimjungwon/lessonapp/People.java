@@ -14,6 +14,7 @@ import java.util.StringTokenizer;
 public class People implements Serializable{
     private String Name;
     private String Gender;
+    private String age;
     private String profile_image;
     private String reg_date;
     private String last_connect_date;
@@ -28,6 +29,10 @@ public class People implements Serializable{
 
     public String getGender() {
         return Gender;
+    }
+
+    public String getAge() {
+        return age;
     }
 
     public String getProfile_image() {
@@ -66,7 +71,9 @@ public class People implements Serializable{
         this.reg_date = reg_date;
     }
 
-
+    public void setAge(String age) {
+        this.age = age;
+    }
 
     public ArrayList<String> getSubject(){
         return this.subject;

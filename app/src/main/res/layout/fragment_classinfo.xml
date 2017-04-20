@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
     tools:context="com.example.kimjungwon.lessonapp.activity_Info_Class$PlaceholderFragment">
 
     <android.support.v4.widget.NestedScrollView
@@ -14,6 +13,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <TextView
+                style="@style/text_view"
+                android:text="과외 과목"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView11" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                style="@style/text_view"
+                android:text="국어"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/info_lessonsubject" />
+
+            <TextView
+                style="@style/divider"
+                android:id="@+id/textView50" />
+
+
+            <TextView
+                style="@style/text_view"
+                android:text="과외비"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/text_view"
+                android:layout_marginLeft="10dp"
+                android:text="주 2회 2시간 35만원"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/info_lessonfee" />
+
+            <TextView
+                style="@style/divider"
+                android:id="@+id/textView51" />
+
 
             <TextView
                 style="@style/text_view"
@@ -29,6 +67,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/info_studentlevel" />
+
+            <TextView
+                style="@style/divider"
+                android:id="@+id/textView52" />
+
+
+            <TextView
+                style="@style/text_view"
+                android:text="수업 가능 시간"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView34" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                style="@style/text_view"
+                android:text="월요일) 10:00 ~ 20:00 (협의 가능)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/info_schedule" />
+
+            <TextView
+                style="@style/divider"
+                android:id="@+id/textView53" />
+
 
             <TextView
                 style="@style/text_view"

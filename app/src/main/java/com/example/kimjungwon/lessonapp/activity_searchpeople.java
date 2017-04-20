@@ -324,6 +324,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                                     String lessontitle = jo2.getString("title");
                                     String background_img = jo2.getString("lessonbackground");
                                     String studentlevel = jo2.getString("studentlevel");
+                                    String lessonfee = jo2.getString("studentlevel");
                                     String lessonsb = jo2.getString("lessonsubject");
                                     String lessonintro = jo2.getString("intro");
                                     String lesson_reg_date = jo2.getString("reg_date");
@@ -337,6 +338,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                                     JSONObject teacher_json = jo2.getJSONObject("teacher");
                                     String name = teacher_json.getString("name");
                                     String gender = teacher_json.getString("gender");
+                                    String age = teacher_json.getString("age");
                                     String profile_image = teacher_json.getString("profile_image");
                                     String address = teacher_json.getString("address");
                                     String LessonFee = teacher_json.getString("LessonFee");
@@ -358,6 +360,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                                     lesson.setLesson_Title(lessontitle);
                                     lesson.setLesson_Background_Image(background_img);
                                     lesson.setStudentlevel(studentlevel);
+                                    lesson.setFee(lessonfee);
                                     lesson.setLesson_Subject(lessonsb);
                                     lesson.setIntro(lessonintro);
                                     lesson.setReg_date(lesson_reg_date);
@@ -378,6 +381,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                                     Teacher teacher = new Teacher();
                                     teacher.setName(name);
                                     teacher.setGender(gender);
+                                    teacher.setAge(age);
                                     teacher.setProfile_image(profile_image);
                                     teacher.setAddress(address);
                                     teacher.setFee(LessonFee);
@@ -1087,6 +1091,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                     String lessontitle = jo2.getString("title");
                     String background_img = jo2.getString("lessonbackground");
                     String studentlevel = jo2.getString("studentlevel");
+                    String lessonfee = jo2.getString("lessonfee");
                     String lessonsb = jo2.getString("LessonSubject");
                     String lessonintro = jo2.getString("intro");
                     String lesson_reg_date = jo2.getString("reg_date");
@@ -1096,10 +1101,10 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                         recruiting = true;
                     }
 
-
                     JSONObject teacher_json = jo2.getJSONObject("teacher");
                     String name = teacher_json.getString("name");
                     String gender = teacher_json.getString("gender");
+                    String age = teacher_json.getString("age");
                     String profile_image = teacher_json.getString("profile_image");
                     String address = teacher_json.getString("address");
                     String LessonFee = teacher_json.getString("LessonFee");
@@ -1121,6 +1126,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                     lesson.setLesson_Title(lessontitle);
                     lesson.setLesson_Background_Image(background_img);
                     lesson.setStudentlevel(studentlevel);
+                    lesson.setFee(lessonfee);
                     lesson.setLesson_Subject(lessonsb);
                     lesson.setIntro(lessonintro);
                     lesson.setReg_date(lesson_reg_date);
@@ -1141,6 +1147,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                     Teacher teacher = new Teacher();
                     teacher.setName(name);
                     teacher.setGender(gender);
+                    teacher.setAge(age);
                     teacher.setProfile_image(profile_image);
                     teacher.setAddress(address);
                     teacher.setFee(LessonFee);
@@ -1277,6 +1284,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             String lessontitle = jo2.getString("title");
                             String background_img = jo2.getString("lessonbackground");
                             String studentlevel = jo2.getString("studentlevel");
+                            String lessonfee = jo2.getString("lessonfee");
                             String lessonsb = jo2.getString("LessonSubject");
                             String lessonintro = jo2.getString("intro");
                             String lesson_reg_date = jo2.getString("reg_date");
@@ -1290,6 +1298,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             JSONObject teacher_json = jo2.getJSONObject("teacher");
                             String name = teacher_json.getString("name");
                             String gender = teacher_json.getString("gender");
+                            String age = teacher_json.getString("age");
                             String profile_image = teacher_json.getString("profile_image");
                             String address = teacher_json.getString("address");
                             String LessonFee = teacher_json.getString("LessonFee");
@@ -1312,6 +1321,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             lesson.setLesson_Title(lessontitle);
                             lesson.setLesson_Background_Image(background_img);
                             lesson.setStudentlevel(studentlevel);
+                            lesson.setFee(lessonfee);
                             lesson.setLesson_Subject(lessonsb);
                             lesson.setIntro(lessonintro);
                             lesson.setReg_date(lesson_reg_date);
@@ -1332,6 +1342,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             Teacher teacher = new Teacher();
                             teacher.setName(name);
                             teacher.setGender(gender);
+                            teacher.setAge(age);
                             teacher.setProfile_image(profile_image);
                             teacher.setAddress(address);
                             teacher.setFee(LessonFee);

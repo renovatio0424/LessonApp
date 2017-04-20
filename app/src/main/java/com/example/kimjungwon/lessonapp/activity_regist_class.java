@@ -78,8 +78,12 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
     String TAG = activity_regist_class.class.getSimpleName();
 
     String User_id,User_name,User_job;
-    EditText lesson_title,lesson_intro,etc;
+    EditText lesson_title,lesson_intro;
+    EditText[] etcText,lesson_fee;
+    CheckBox dealpossible;
+    TableRow[] etcRow;
     TextView byteview;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -93,7 +97,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
         User_job = getIntent().getStringExtra("job");
 
         backgroundimg = (ImageView) findViewById(R.id.regist_lesson_background);
-        Glide.with(this).load(R.drawable.background_test).into(backgroundimg);
+//        Glide.with(this).load(R.drawable.ic_backgroundimage).fitCenter().into(backgroundimg);
 
         backgroundimg.setOnClickListener(this);
 
@@ -102,11 +106,17 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
         regist_btn.setOnClickListener(this);
 
 
-        lesson_spinner = new Spinner[1][2];
-        lesson_spinner[0][0] = (Spinner) findViewById(R.id.regist_lesson_subject1);
-        lesson_spinner[0][1] = (Spinner) findViewById(R.id.regist_lesson_subject2);
+        lesson_spinner = new Spinner[3][2];
+        lesson_spinner[0][0] = (Spinner) findViewById(R.id.hopelesson1);
+        lesson_spinner[0][1] = (Spinner) findViewById(R.id.hopelesson1_2);
+        lesson_spinner[1][0] = (Spinner) findViewById(R.id.hopelesson2);
+        lesson_spinner[1][1] = (Spinner) findViewById(R.id.hopelesson2_2);
+        lesson_spinner[2][0] = (Spinner) findViewById(R.id.hopelesson3);
+        lesson_spinner[2][1] = (Spinner) findViewById(R.id.hopelesson3_2);
 
         lesson_spinner[0][0].setOnItemSelectedListener(this);
+        lesson_spinner[1][0].setOnItemSelectedListener(this);
+        lesson_spinner[2][0].setOnItemSelectedListener(this);
 
         lesson_title = (EditText) findViewById(R.id.regist_lesson_tiitle);
         lesson_intro = (EditText) findViewById(R.id.intro_lesson);
@@ -142,7 +152,23 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
 
         setCheckBox();
 
-        etc = (EditText) findViewById(R.id.regist_etc);
+        etcRow = new TableRow[3];
+        etcRow[0] = (TableRow) findViewById(R.id.etcRow1);
+        etcRow[1] = (TableRow) findViewById(R.id.etcRow2);
+        etcRow[2] = (TableRow) findViewById(R.id.etcRow3);
+
+        etcText = new EditText[3];
+        etcText[0] = (EditText) findViewById(R.id.etcET1);
+        etcText[1] = (EditText) findViewById(R.id.etcET2);
+        etcText[2] = (EditText) findViewById(R.id.etcET3);
+
+        lesson_fee = new EditText[3];
+        lesson_fee[0] = (EditText) findViewById(R.id.LessonCount);
+        lesson_fee[1] = (EditText) findViewById(R.id.LessonTime);
+        lesson_fee[2] = (EditText) findViewById(R.id.LessonFee);
+
+        dealpossible = (CheckBox) findViewById(R.id.LessonConsult);
+
         //권한
         int permissionCheckStorage = ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.CAMERA);
@@ -152,6 +178,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
                     REQUEST_WRITE_STORAGE);
         }
     }
+
     public Boolean check_boxes(CheckBox[] boxes){
         Boolean result = false;
 
@@ -175,34 +202,105 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
         return result;
     }
 
-    public Boolean check_lessons(Spinner[][] spinners){
-        Boolean result = false;
 
-        for(int i = 0 ; i < spinners.length ; i++){
-            for (int j = 0 ; j < spinners[i].length ; j++){
-                if(spinners[i][0].getSelectedItemPosition() != 0 && spinners[i][1].getSelectedItemPosition() != 0){
-                    result = true;
-                }else if(spinners[i][0].getSelectedItemPosition() == 9 && etc.getText().length() != 0){
-                    result = true;
-                }
+
+
+    public Boolean Check_hopelesson(Context context) {
+
+        int[][] index = new int[3][2];
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 2; j++) {
+                index[i][j] = lesson_spinner[i][j].getSelectedItemPosition();
+            }
+        }
+//      대과목만 선택하고 소과목은 선택하지 않은 경우 | '대과목 = 기타' 일 경우는 예외
+        for(int i = 0 ; i < 3 ; i++){
+            if(index[i][0] != 0 && index[i][1] == 0 && index[i][0] != 9){
+                Toast.makeText(context, (i+1) + "번째 소과목을 선택해주세요", Toast.LENGTH_SHORT).show();
+                return false;
             }
         }
 
-        return result;
+        if(index[0][0] == 0 ){
+            if(index[1][0] != 0 | index[2][0] != 0){
+                Toast.makeText(context, "순서 대로 입력해주세요", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }else if(index[1][0] == 0){
+            if(index[2][0] != 0){
+                Toast.makeText(context, "순서 대로 입력해주세요", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
+//      과목 중복선택 예외처리 (2개/3개) 소과목까지 모두 선택한 과목중에서
+        if (index[0][0] == index[1][0] && index[0][0] != 0) {
+            if (index[0][1] == index[1][1]) {
+                Toast.makeText(context, "과목 중복 선택은 불가 합니다", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } else if (index[1][0] == index[2][0] && index[1][0] != 0) {
+            if (index[1][1] == index[2][1]) {
+                Toast.makeText(context, "과목 중복 선택은 불가 합니다", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } else if (index[2][0] == index[0][0] && index[0][0] != 0) {
+            if (index[2][1] == index[0][1]) {
+                Toast.makeText(context, "과목 중복 선택은 불가 합니다", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } else if (index[0][0] == index[1][0] && index[1][0] == index[2][0] && index[0][0] != 0) {
+            if (index[0][1] == index[1][1] | index[1][1] == index[2][1] | index[2][1] == index[1][1]) {
+                Toast.makeText(context, "과목 중복 선택은 불가 합니다", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
     }
 
     public String GetLesson(Spinner[][] lessons){
         String result = "";
+        for (int i = 0; i < lessons.length; i++) {
+//            세부과목 체크 하지 않은 항목은 입력 제외
+            if(lessons[i][0].getSelectedItemPosition() == 0 ){
+                Log.d("GETLesson","index: " + lessons[i][0].getSelectedItemPosition());
+                break;
+            }
 
-        String lesson1 = lessons[0][0].getSelectedItem().toString();
-        String lesson2 = lessons[0][1].getSelectedItem().toString();
+            String s1 = lessons[i][0].getSelectedItem().toString(), s2 = lessons[i][1].getSelectedItem().toString(), s3 = "";
+            EditText editText = null;
+            result += "@" + s1 + " - " + s2;
 
-        Log.d(TAG,"select index: " + lessons[0][0].getSelectedItemPosition());
-
-        if(lessons[0][0].getSelectedItemPosition() == 9){
-            result += lesson1 + " - " + lesson2 + "(" + etc.getText().toString() + ")";
-        }else{
-            result += lesson1 + " - " + lesson2;
+            if (lessons[i][0].getSelectedItem().toString().equals("기타") && lessons[i][1].getSelectedItem().toString().equals("기타")) {
+                switch (i) {
+                    case 0:
+                        editText = etcText[0];
+                        break;
+                    case 1:
+                        editText = etcText[1];
+                        break;
+                    case 2:
+                        editText = etcText[2];
+                        break;
+                }
+                s3 = editText.getText().toString();
+                result += "(" + s3 + ")";
+            } else if (lessons[i][1].getSelectedItem().toString().equals("기타")) {
+                switch (i) {
+                    case 0:
+                        editText = etcText[0];
+                        break;
+                    case 1:
+                        editText = etcText[1];
+                        break;
+                    case 2:
+                        editText = etcText[2];
+                        break;
+                }
+                s3 = editText.getText().toString();
+                result += "(" + s3 + ")";
+            }
         }
 
         return result;
@@ -231,7 +329,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
         switch (id) {
             case R.id.regist_btn:
                 //예외처리
-                String imagename="",result_title="",result_student="",result_lesson="",result_intro="";
+                String imagename="",result_title="",result_student="",result_lesson="",result_intro="",result_fee="";
                 //1. 수업 제목 입력
                 if(lesson_title.length() == 0){
                     Toast.makeText(this, "수업 제목을 입력해주세요", Toast.LENGTH_SHORT).show();
@@ -259,19 +357,28 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
                     result_student = GET_sb(StudentBox);
                 }else{
                     Toast.makeText(this, "과외 대상을 1개 이상 선택해주세요", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
+                if(check_fee(lesson_fee)){
+                    result_fee = get_fee(lesson_fee,dealpossible);
+                }else{
+                    Toast.makeText(this, "과외비를 입력해주세요", Toast.LENGTH_SHORT).show();
+                    break;
                 }
 
                 //4. 과외 과목
-                if(check_lessons(lesson_spinner)){
-                    result_lesson = "@" + GetLesson(lesson_spinner);
+                if(Check_hopelesson(getApplicationContext())){
+                    result_lesson = GetLesson(lesson_spinner);
                 }else{
-                    Toast.makeText(this, "과외 과목을 선택해주세요", Toast.LENGTH_SHORT).show();
+                    break;
                 }
 
                 //5. 수업 소개
                 if(lesson_intro.length() == 0){
                     Toast.makeText(this, "수업 소개를 적어주세요", Toast.LENGTH_SHORT).show();
-                }else{
+                    break;
+                }else {
                     result_intro = lesson_intro.getText().toString();
                 }
 
@@ -281,6 +388,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
                     jo.put("lessonbackground",imagename);
                     jo.put("title",result_title);
                     jo.put("studentlevel",result_student);
+                    jo.put("lessonfee",result_fee);
                     jo.put("lessonsubject",result_lesson);
                     jo.put("intro",result_intro);
 
@@ -340,6 +448,25 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
                         show();
                 break;
         }
+    }
+
+    private String get_fee(EditText[] lesson_fee, CheckBox dealpossible) {
+        String result = "@" + lesson_fee[0].getText().toString();
+        result += "@" + lesson_fee[1].getText().toString();
+        result += "@" + lesson_fee[2].getText().toString();
+        if(dealpossible.isChecked()){
+            result += "@(협의가능)";
+        }
+        return result;
+    }
+
+    private boolean check_fee(EditText[] lesson_fee) {
+        for(int i = 0 ; i < lesson_fee.length ; i++){
+            if(lesson_fee[i].getText().length() == 0){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void setCheckBox(){
@@ -429,18 +556,18 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
         Spinner spinner;
         final TableRow ETCROW;
         switch (id) {
-            case R.id.regist_lesson_subject1:
+            case R.id.hopelesson1:
                 spinner = lesson_spinner[0][1];
-                ETCROW = (TableRow) findViewById(R.id.regist_etcRow);
+                ETCROW = etcRow[0];
                 break;
-//            case R.id.hopelesson2:
-//                spinner = subjects[1][1];
-//                ETCROW = etcRow2;
-//                break;
-//            case R.id.hopelesson3:
-//                spinner = subjects[2][1];
-//                ETCROW = etcRow3;
-//                break;
+            case R.id.hopelesson2:
+                spinner = lesson_spinner[1][1];
+                ETCROW = etcRow[1];
+                break;
+            case R.id.hopelesson3:
+                spinner = lesson_spinner[2][1];
+                ETCROW = etcRow[2];
+                break;
             default:
                 spinner = null;
                 ETCROW = null;
@@ -456,6 +583,17 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
                         android.R.layout.simple_spinner_dropdown_item,
                         getResources().getStringArray(R.array.nosubsection_array));
                 spinner.setAdapter(adapter);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
+                    }
+                });
                 break;
             //국어
             case 1:
@@ -478,7 +616,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
                     }
                 });
                 break;
@@ -503,7 +641,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
                     }
                 });
                 break;
@@ -528,7 +666,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
                     }
                 });
                 break;
@@ -553,7 +691,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
                     }
                 });
                 break;
@@ -578,7 +716,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
                     }
                 });
                 break;
@@ -603,7 +741,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
                     }
                 });
                 break;
@@ -628,7 +766,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
                     }
                 });
                 break;
@@ -653,7 +791,7 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
                     }
                 });
                 break;
@@ -678,11 +816,13 @@ public class activity_regist_class extends AppCompatActivity implements AdapterV
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
                     }
                 });
 
+//                ETCROW.setVisibility(View.VISIBLE);
                 break;
+
         }
     }
 

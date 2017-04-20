@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:padding="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -28,6 +28,29 @@
                 android:id="@+id/info_gender" />
 
             <TextView
+                style="@style/divider"
+                android:id="@+id/textView53" />
+
+            <TextView
+                style="@style/text_view"
+                android:text="나이"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView21" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                style="@style/text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/info_age"
+                android:text="24세"/>
+
+            <TextView
+                style="@style/divider"
+                android:id="@+id/textView54" />
+
+            <TextView
                 style="@style/text_view"
                 android:text="수업 가능 지역"
                 android:layout_width="match_parent"
@@ -43,6 +66,10 @@
                 android:id="@+id/info_lessonplace" />
 
             <TextView
+                style="@style/divider"
+                android:id="@+id/textView55" />
+
+            <TextView
                 style="@style/text_view"
                 android:text="출신 학교"
                 android:layout_width="match_parent"
@@ -56,6 +83,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/info_college" />
+
+            <TextView
+                style="@style/divider"
+                android:id="@+id/textView56" />
 
             <TextView
                 style="@style/text_view"

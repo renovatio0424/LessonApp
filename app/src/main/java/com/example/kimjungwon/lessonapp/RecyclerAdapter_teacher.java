@@ -92,10 +92,21 @@ public class RecyclerAdapter_teacher extends RecyclerView.Adapter<RecyclerAdapte
         holder.collge_name.setText(teacher.getCollegeName());
 
 //        holder.Lesson_Place.setText(place);
-        String fee = "주" + teacher.getFee().get(0) + "회 " +
-                teacher.getFee().get(2) +"만원";
+
+
+        String fee = "주" + lesson.getFee().get(0) + "회 " +
+                lesson.getFee().get(2) +"만원";
         holder.Lesson_Fee.setText(fee);
-        holder.Lesson_Subject.setText(lesson.getLesson_Subject());
+
+        String lesson_subject = "";
+        for(int i = 0 ; i < lesson.getLesson_Subject().size() ; i++){
+            lesson_subject += lesson.getLesson_Subject().get(i).split(" - ")[1];
+            if(i != lesson.getLesson_Subject().size() - 1){
+                lesson_subject += " / ";
+            }
+        }
+
+        holder.Lesson_Subject.setText(lesson_subject);
         holder.Review_count.setText(""+lesson.getHits());
 
     }
