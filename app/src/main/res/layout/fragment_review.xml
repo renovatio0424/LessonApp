@@ -2,51 +2,46 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="15dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+    android:layout_height="match_parent"
+    android:padding="10dp">
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="wrap_content" >
 
                 <TextView
+                    style="@style/text_view"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
+
                     android:text="총 후기 3개"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView47" />
+                    android:id="@+id/total_review_tv" />
 
-                <ImageButton
+                <ImageView
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_create_black_24dp"
-                    android:id="@+id/imageButton" />
+                    app:srcCompat="@drawable/ic_refresh"
+                    android:id="@+id/refresh_iv" />
+
+                <Space
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:text="후기 작성"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/write_btn" />
 
             </TableRow>
 
-            <include
+            <android.support.v7.widget.RecyclerView
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/card_review" />
+                android:layout_height="match_parent"
+                android:id="@+id/review_view" />
 
-            <include
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/card_review" />
-
-            <include
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/card_review" />
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

@@ -99,12 +99,19 @@ public class activity_main extends TabActivity{
         pushIDService.sendRegistrationToServer(this);
 
 
-        //SQLite에 저장
-        ConsultDB consultDB = new ConsultDB(this,"Consulting.db",null,1);
+
 
 //        consultDB.delete("state","과외거절");
 //        consultDB.deleteAll();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //SQLite에 저장
+        ConsultDB consultDB = new ConsultDB(this,"Consulting.db",null,1);
+        consultDB.deleteAll();
         ArrayList<Consult> consults = LoadConsult();
 
         for(int i = 0 ; i < consults.size() ; i++){
@@ -116,7 +123,6 @@ public class activity_main extends TabActivity{
         }else{
             Toast.makeText(activity_main.this, "모두 확인했습니다", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public ArrayList<Consult> LoadConsult(){

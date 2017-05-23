@@ -442,6 +442,8 @@
                 android:text="수업 소개" />
 
             <EditText
+                android:padding="10dp"
+                android:gravity="top"
                 android:id="@+id/intro_lesson"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

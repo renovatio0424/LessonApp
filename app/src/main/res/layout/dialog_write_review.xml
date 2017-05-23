@@ -3,4 +3,24 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RatingBar
+        android:layout_gravity="center"
+        android:numStars="5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/write_rating" />
+
+    <EditText
+        android:hint="후기를 입력해주세요"
+        android:gravity="top"
+        android:layout_margin="5dp"
+        android:background="@drawable/border"
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:minHeight="200dp"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/write_content" />
 </LinearLayout>

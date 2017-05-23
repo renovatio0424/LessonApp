@@ -57,7 +57,9 @@ public class RecyclerAdapter_consulting extends RecyclerView.Adapter<RecyclerAda
 
         if (consult.getState().equals("상담중")) {
             holder.state.setBackgroundResource(R.color.Yellow);
-        } else if (consult.getState().equals("과외 거절")) {
+        } else if (consult.getState().equals("수락 대기중")){
+            holder.state.setBackgroundResource(R.color.Blue);
+        }else if (consult.getState().equals("과외 거절")) {
             holder.state.setBackgroundResource(R.color.Red);
         } else if (consult.getState().equals("과외중")) {
             holder.state.setBackgroundResource(R.color.Orange);
@@ -68,11 +70,11 @@ public class RecyclerAdapter_consulting extends RecyclerView.Adapter<RecyclerAda
         }
 
         Log.d(TAG, "Reason: " + consult.getReason());
-        if (consult.getReason().equals("null")) {
+        if (consult.getReason().equals("null") | consult.getReason() == null) {
             holder.reason.setVisibility(View.GONE);
         } else {
             holder.reason.setVisibility(View.VISIBLE);
-            holder.reason.setText(consult.getReason());
+            holder.reason.setText("사유: " + consult.getReason());
         }
 
         if(consult.getConfiramtion() == 0){
@@ -100,5 +102,13 @@ public class RecyclerAdapter_consulting extends RecyclerView.Adapter<RecyclerAda
             category = (TextView) itemView.findViewById(R.id.consult_category);
             confirmation = (TextView) itemView.findViewById(R.id.confirmation);
         }
+    }
+
+    public void clear(){
+        consults.clear();
+    }
+
+    public void addAll(ArrayList<Consult> consults){
+        this.consults.addAll(consults);
     }
 }

@@ -55,7 +55,7 @@ public class ConsultDB extends SQLiteOpenHelper {
 
         Log.d(TAG, "insert start");
 
-        //중복일 경우
+        //중복 아닐 경우
         if (!isDuplicated(id)) {
             // DB에 입력한 값으로 행 추가
             query = "INSERT INTO ConsultDB VALUES(" + id + "," +
@@ -67,16 +67,28 @@ public class ConsultDB extends SQLiteOpenHelper {
                     "" + confirmation + ");";
             Log.d(TAG, "insert query: " + query);
         }
-        //중복 데이터가 없을 경우
+        //중복일 경우
         else {
-            query = "UPDATE ConsultDB SET " +
-                    "category = '" + category + "', " +
-                    "lessontitle = '" + LessonTitle + "', " +
-                    "yourname = '" + yourname + "', " +
-                    "state = '" + State + "', " +
-                    "reason = '" + Reason + "', " +
-                    "confirmation = " + confirmation + " " +
-                    "WHERE id = " + id +";";
+            if(Reason != null){
+                query = "UPDATE ConsultDB SET " +
+                        "category = '" + category + "', " +
+                        "lessontitle = '" + LessonTitle + "', " +
+                        "yourname = '" + yourname + "', " +
+                        "state = '" + State + "', " +
+                        "reason = '" + Reason + "', " +
+                        "confirmation = " + confirmation + " " +
+                        "WHERE id = " + id +";";
+            }else{
+                query = "UPDATE ConsultDB SET " +
+                        "category = '" + category + "', " +
+                        "lessontitle = '" + LessonTitle + "', " +
+                        "yourname = '" + yourname + "', " +
+                        "state = '" + State + "', " +
+                        "reason = null, " +
+                        "confirmation = " + confirmation + " " +
+                        "WHERE id = " + id +";";
+            }
+
             Log.d(TAG, "update query: " + query);
         }
 
@@ -85,20 +97,20 @@ public class ConsultDB extends SQLiteOpenHelper {
     }
 
 
-    public void update(String table, String coulmn, String coulmn_value, String whereClause, String whereArg) {
+    public void update(String coulmn, String coulmn_value, String whereClause, String whereArg) {
         SQLiteDatabase db = getWritableDatabase();
-        // 입력한 항목과 일치하는 행의 가격 정보 수정
-        String query = "UPDATE " + table + " SET " + coulmn + " = '" + coulmn_value + "' WHERE " + whereClause + " = '" + whereArg + "';";
+        // 입력한 항목과 일치하는 행의 상담 정보 수정
+        String query = "UPDATE ConsultDB SET " + coulmn + " = '" + coulmn_value + "' WHERE " + whereClause + " = '" + whereArg + "';";
         Log.d(TAG, "update query: " + query);
 
         db.execSQL(query);
         db.close();
     }
 
-    public void delete(String coulmn, String coulmn_value) {
+    public void deleteByid(String coulmn, int id) {
         SQLiteDatabase db = getWritableDatabase();
         // 입력한 항목과 일치하는 행 삭제
-        String query = "DELETE FROM ConsultDB ";
+        String query = "DELETE FROM ConsultDB WHERE " + coulmn + " = " + id;
         Log.d(TAG, "delete query: " + query);
 
         db.execSQL(query);
@@ -176,7 +188,7 @@ public class ConsultDB extends SQLiteOpenHelper {
 
         ArrayList<Consult> consults = new ArrayList<>();
 
-        String query = "SELECT * FROM ConsultDB";
+        String query = "SELECT * FROM ConsultDB ORDER BY id DESC";
         Log.d(TAG, "select query: " + query);
 
         // DB에 있는 데이터를 쉽게 처리하기 위해 Cursor를 사용하여 테이블에 있는 모든 데이터 출력

@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
  */
 
 public class Lesson implements Serializable{
+    private int Lesson_id;
     private String Lesson_Title;
     private String Lesson_Background_Image;
     private ArrayList<String> studentlevel,Lesson_Subject,fee;
@@ -21,6 +22,14 @@ public class Lesson implements Serializable{
         studentlevel = new ArrayList<>();
         Lesson_Subject = new ArrayList<>();
         fee = new ArrayList<>();
+    }
+
+    public void setLesson_id(int lesson_id) {
+        Lesson_id = lesson_id;
+    }
+
+    public int getLesson_id() {
+        return Lesson_id;
     }
 
     public void setLesson_Background_Image(String lesson_Background_Image) {

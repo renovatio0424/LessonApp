@@ -328,6 +328,7 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
 
         Data = getIntent();
 
+        LessonFeeLayout = (TableLayout) findViewById(R.id.LessonFeeLayout);
         if (Data.hasExtra("job")) {
             Toast.makeText(this, "job: " + Data.getStringExtra("job"), Toast.LENGTH_SHORT).show();
             if (Data.getStringExtra("job").equals("teacher")) {
@@ -335,7 +336,7 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
                 StudentForm.setVisibility(View.GONE);
                 placetable.setVisibility(View.VISIBLE);
                 collegeRow.setVisibility(View.VISIBLE);
-                LessonFeeLayout = (TableLayout) findViewById(R.id.LessonFeeLayout);
+
                 LessonFeeLayout.setVisibility(View.GONE);
             } else if (Data.getStringExtra("job").equals("student")) {
                 TeacherForm.setVisibility(View.GONE);
@@ -508,9 +509,7 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
                     jo.put("LessonFee", Fee);
                     jo.put("dealpossible", dealpossible);
                     jo.put("intro", intro);
-
-
-
+                    
                     String str_json = jo.toString();
 
                     Log.d("classinfo", "before json: " + str_json);

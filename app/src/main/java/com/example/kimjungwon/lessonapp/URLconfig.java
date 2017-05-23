@@ -23,4 +23,6 @@ public class URLconfig {
     public static String UpdateConsult_URL = MyURL + "/ConsultingUpdate.php";
     public static String Server_IP = "52.79.203.148";
     public static int Chatting_Port = 12345;
+    public static String Consult_agree_URL = MyURL + "/Consult_agree.php";
+    public static String Review_URL = MyURL + "/Review.php";
 }

@@ -259,7 +259,9 @@ public class ChatService extends Service {
                 Date today = new Date(System.currentTimeMillis());
                 SimpleDateFormat time = new SimpleDateFormat("a hh:mm");
                 String now = time.format(today);
-                output.writeUTF(CreateRoom + "@&" + myname + "@&몰라@&##" + myname + "님이 입장하셨습니다@&" + now + "@&프로필이미지@&" + consult_id);
+                //컨설트 아이디 수정
+//                output.writeUTF(CreateRoom + "@&" + myname + "@&몰라@&##" + myname + "님이 입장하셨습니다@&" + now + "@&프로필이미지@&" + consult_id);
+                output.writeUTF(CreateRoom + "@&" + myname + "@&몰라@&##" + myname + "님이 입장하셨습니다@&" + now + "@&프로필이미지@&56");
 
                 Log.d(TAG,"socket is connected ? : " + (socket.isConnected() ? "connected" : "disconnected") );
 

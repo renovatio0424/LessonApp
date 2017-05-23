@@ -1,9 +1,12 @@
 package com.example.kimjungwon.lessonapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,28 +14,41 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.github.pwittchen.infinitescroll.library.InfiniteScrollListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.concurrent.ExecutionException;
 
+import static com.example.kimjungwon.lessonapp.URLconfig.Chatting_Port;
 import static com.example.kimjungwon.lessonapp.URLconfig.MyURL;
 import static com.example.kimjungwon.lessonapp.URLconfig.RequestLesson_URL;
+import static com.example.kimjungwon.lessonapp.URLconfig.Review_URL;
+import static com.example.kimjungwon.lessonapp.URLconfig.UpdateConsult_URL;
 
 /**
  * Created by kimjungwon on 2017-04-13.
@@ -61,7 +77,12 @@ public class activity_Info_Class extends AppCompatActivity {
 
     private static String TAG = activity_Info_Class.class.getSimpleName();
 
-    String job, name, myid;
+    static String job, name, myid;
+    Boolean review = false;
+
+    static int lesson_id ;
+    static ArrayList<Review> reviews = null;
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -75,9 +96,13 @@ public class activity_Info_Class extends AppCompatActivity {
         job = intent.getStringExtra("job");
         name = intent.getStringExtra("name");
 
-        teacher = (Teacher) intent.getSerializableExtra("person");
-        toolbar.setTitle(teacher.getLesson().getLesson_Title());
+        //후기 작성 노티에서 이동했니?
+        if(intent.hasExtra("review"))
+            review = intent.getBooleanExtra("review",false);
 
+        teacher = (Teacher) intent.getSerializableExtra("person");
+        lesson_id = teacher.getLesson().getLesson_id();
+        toolbar.setTitle(teacher.getLesson().getLesson_Title());
 
         //강의 배경
         ImageView imageView = (ImageView) findViewById(R.id.lesson_background);
@@ -96,23 +121,19 @@ public class activity_Info_Class extends AppCompatActivity {
                 Toast.makeText(activity_Info_Class.this, "background_img", Toast.LENGTH_SHORT).show();
             }
         });
-//        Glide.with(this).load("http://52.79.203.148/uploads/ajsj@ajdj.com_1491713435.jpg").centerCrop().into(imageView);
 
         //프로필 사진
         ImageView imageView1 = (ImageView) findViewById(R.id.profile_img_teacher);
 
         if (teacher.getProfile_image().equals("null")) {
             if (teacher.getGender().charAt(0) == 'M') {
-//                Glide.with(context).load(R.drawable.ic_male_student).into(holder.profileimg_teacher);
                 imageView1.setImageResource(R.drawable.ic_male_student);
             } else {
-//                Glide.with(context).load(R.drawable.ic_female_student).into(holder.profileimg_teacher);
                 imageView1.setImageResource(R.drawable.ic_female_student);
             }
         } else {
             Glide.with(getApplicationContext()).load(MyURL + teacher.getProfile_image()).into(imageView1);
         }
-//        Glide.with(this).load(R.drawable.sonnaeun).centerCrop().into(imageView1);
         imageView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,7 +145,6 @@ public class activity_Info_Class extends AppCompatActivity {
         nameview.setText(teacher.getName());
 
 
-//        Glide.with(this).load("http://52.79.203.148/uploads/ajsj@ajdj.com_1491713435.jpg").into(imageView1);
 //         Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -135,6 +155,10 @@ public class activity_Info_Class extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        //과외 완료 인텐트로부터 왔으면 후기 작성 탭으로 자동 이동
+        if(review)
+            tabLayout.getTabAt(2).select();
 
         RequestLesson = (Button) findViewById(R.id.RequestLesson);
         RequestLesson.setOnClickListener(new View.OnClickListener() {
@@ -254,6 +278,138 @@ public class activity_Info_Class extends AppCompatActivity {
 //                후기
                 case 3:
                     rootView = inflater.inflate(R.layout.fragment_review, container, false);
+                    RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.review_view);
+
+                    try {
+                        reviews = new UpdateReviewTask(getContext()).execute(lesson_id).get();
+                        for(int i = 0 ; i < reviews.size() ; i++){
+                            Review rv = reviews.get(i);
+                            Log.d(TAG,"updateReviewTask\nindex: " + (i+1) + "\ncontent: " +rv.getContent() );
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+//                    ArrayList<Review> reviews = new ArrayList<>();
+//                    for(int i = 0 ; i < 20 ; i ++){
+//                        Review review = new Review();
+//                        review.setUser_name("유저 " + (i + 1));
+//                        review.setRating(i % 5);
+//                        review.setContent("내용 " + (i + 1));
+//                        reviews.add(review);
+//                    }
+
+                    final TextView total_review_num = (TextView) rootView.findViewById(R.id.total_review_tv);
+                    total_review_num.setText("총 후기 "+ reviews.size() + "개");
+                    final RecyclerAdapter_review recyclerAdapter_review = new RecyclerAdapter_review(getContext(),reviews,R.layout.card_review);
+                    recyclerView.setAdapter(recyclerAdapter_review);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    recyclerView.setLayoutManager(linearLayoutManager);
+
+                    //새로고침 버튼
+                    ImageView refresh = (ImageView) rootView.findViewById(R.id.refresh_iv);
+                    refresh.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            try {
+                                recyclerAdapter_review.clear();
+                                recyclerAdapter_review.addAll(new UpdateReviewTask(getContext()).execute(lesson_id).get());
+                                recyclerAdapter_review.notifyDataSetChanged();
+                                total_review_num.setText("총 후기 "+ recyclerAdapter_review.getItemCount() + "개");
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    //후기 작성 버튼
+                    Button write_btn = (Button) rootView.findViewById(R.id.write_btn);
+                    write_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            try {
+                                PHPRequest phpRequest = new PHPRequest(Review_URL);
+                                JSONObject jsonObject1 = new JSONObject();
+                                jsonObject1.put("case",2);
+                                jsonObject1.put("lesson_id",lesson_id);
+                                jsonObject1.put("usr_id",myid);
+                                Log.d(TAG,"lesson_id: " + lesson_id + "\nusr_id: " + myid);
+                                String duplicate = phpRequest.POSTJSON(jsonObject1.toString());
+                                Log.d(TAG,"duplicate: " + duplicate);
+                                if(!duplicate.equals("true")){
+                                    Toast.makeText(getContext(), duplicate, Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            new MaterialDialog.Builder(getContext())
+                                    .title("과외 후기")
+                                    .customView(R.layout.dialog_write_review,true)
+                                    .positiveText("작성")
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                            try {
+                                                PHPRequest phpRequest = new PHPRequest(Review_URL);
+                                                JSONObject jsonObject = new JSONObject();
+                                                RatingBar ratingbar = (RatingBar) dialog.findViewById(R.id.write_rating);
+                                                EditText content_et = (EditText) dialog.findViewById(R.id.write_content);
+
+                                                float rating = ratingbar.getRating();
+                                                String content = content_et.getText().toString();
+
+                                                // 0 : write_review case
+                                                jsonObject.put("case",0);
+                                                jsonObject.put("lesson_id",lesson_id);
+                                                jsonObject.put("usr_id",myid);
+                                                jsonObject.put("rating",rating);
+                                                jsonObject.put("content",content);
+
+                                                String before = jsonObject.toString();
+
+                                                String result = phpRequest.POSTJSON(before);
+                                                Toast.makeText(getContext(),result, Toast.LENGTH_SHORT).show();
+                                                Log.d(TAG,"lesson_id: " + lesson_id +
+                                                        "\nusr_id: " + myid +
+                                                        "\nrating: " + rating +
+                                                        "\ncontent: " + content +
+                                                        "\nresult: " + result);
+                                                recyclerAdapter_review.clear();
+                                                recyclerAdapter_review.addAll(new UpdateReviewTask(getContext()).execute(lesson_id).get());
+                                                recyclerAdapter_review.notifyDataSetChanged();
+                                                total_review_num.setText("총 후기 "+ recyclerAdapter_review.getItemCount() + "개");
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            } catch (MalformedURLException e) {
+                                                e.printStackTrace();
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            } catch (ExecutionException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    })
+                                    .negativeText("취소")
+                                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+
+                        }
+                    });
                     break;
                 default:
                     rootView = inflater.inflate(R.layout.fragment_classinfo, container, false);
@@ -311,5 +467,74 @@ public class activity_Info_Class extends AppCompatActivity {
             }
             return null;
         }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+    }
+
+    public static class UpdateReviewTask extends AsyncTask<Integer, Void, ArrayList> {
+        MaterialDialog progress_dialog;
+        Context context;
+
+        public UpdateReviewTask(Context context){
+            this.context = context;
+        }
+        @Override
+        protected void onPreExecute() {
+            progress_dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .show();
+        }
+
+        @Override
+        protected ArrayList<Review> doInBackground(Integer... Integers) {
+            int lesson_id = Integers[0];
+            ArrayList<Review> result = new ArrayList<>();
+            String after = null;
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+                jsonObject.put("case",1);
+                jsonObject.put("lesson_id",lesson_id);
+                String before = jsonObject.toString();
+                Log.d(TAG,"before: " + before);
+                PHPRequest phpRequest = new PHPRequest(Review_URL);
+                after = phpRequest.POSTJSON(before);
+                Log.d(TAG,"after: " + after);
+                result = StringToReview(after);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList result) {
+            progress_dialog.dismiss();
+        }
+    }
+
+    public static ArrayList<Review> StringToReview(String result) throws JSONException {
+        JSONArray jsonArray = new JSONArray(result);
+
+        ArrayList<Review> results = new ArrayList<>();
+        for (int i = 0 ; i < jsonArray.length() ; i++){
+            Review review = new Review();
+            JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+            review.setId(Integer.parseInt(jsonObject2.getString("id")));
+            review.setUser_img(jsonObject2.getString("user_img"));
+            review.setUser_name((String) jsonObject2.get("user_name"));
+            review.setContent(jsonObject2.getString("content"));
+            review.setRating(Float.parseFloat(jsonObject2.getString("rating")));
+            review.setDate((String) jsonObject2.get("date"));
+            results.add(review);
+        }
+
+        return results;
     }
 }

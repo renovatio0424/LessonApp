@@ -92,8 +92,9 @@
         android:id="@+id/textView40" />
 
     <EditText
+        android:gravity="top"
         android:layout_margin="5dp"
-        android:padding="5dp"
+        android:padding="10dp"
         android:background="@drawable/border"
         android:minHeight="200dp"
         android:layout_width="match_parent"

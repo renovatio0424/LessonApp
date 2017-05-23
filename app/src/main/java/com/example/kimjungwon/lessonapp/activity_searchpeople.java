@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,7 +51,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
      * may be best to switch to a
      * {@link FragmentStatePagerAdapter}.
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private static SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -76,10 +77,13 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
     static String User_id, User_name, User_job, area_title;
 
     static RecyclerAdapter_student recyclerAdapterStudent;
+    static RecyclerAdapter_teacher recyclerAdapter_teacher;
 
     public OAuthLogin mOAuthLoginInstance;
 
     static String sortmethod = "최신 등록순";
+
+    static SwipeRefreshLayout swipeRefreshLayout ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,14 +207,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
         //학생리스트 초기값
         setPeople();
-//        recyclerAdapterStudent = new RecyclerAdapter_student(getApplicationContext(), New_list, R.layout.card_student);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        recyclerAdapterStudent.notifyDataSetChanged();
-//        mSectionsPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -241,7 +238,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
 //                    Toast.makeText(this, "" + students, Toast.LENGTH_SHORT).show();
 
-                    if(User_job.equals("teacher")){
+                    if (User_job.equals("teacher")) {
                         try {
                             JSONObject jo = new JSONObject(students);
 //                        JSONArray ja = new JSONArray(students);
@@ -250,6 +247,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             for (int j = 0; j < Total_list.size(); j++) {
                                 //담기 전에 초기화
                                 Total_list.get(j).clear();
+                                recyclerAdapterStudent.notifyDataSetChanged();
 
                                 JSONArray ja = jo.getJSONArray(subjects[j]);
 
@@ -301,6 +299,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                                     Total_list.get(j).add(st);
 
                                     mSectionsPagerAdapter.notifyDataSetChanged();
+                                    recyclerAdapterStudent.notifyDataSetChanged();
 //                            String total = User_name + gender + id ;
 //                            Log.d("JSONARRAY",""+ i + ":" + tot
                                 }
@@ -308,7 +307,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }else if(User_job.equals("student")){
+                    } else if (User_job.equals("student")) {
                         try {
                             JSONObject jo = new JSONObject(students);
 //                        JSONArray ja = new JSONArray(students);
@@ -317,21 +316,24 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             for (int j = 0; j < Total_list.size(); j++) {
                                 //담기 전에 초기화
                                 Total_list.get(j).clear();
+                                recyclerAdapter_teacher.notifyDataSetChanged();
+
 
                                 JSONArray ja = jo.getJSONArray(subjects[j]);
 
                                 for (int i = 0; i < ja.length(); i++) {
                                     JSONObject jo2 = ja.getJSONObject(i);
+                                    int lesson_id = jo2.getInt("lesson_id");
                                     String lessontitle = jo2.getString("title");
                                     String background_img = jo2.getString("lessonbackground");
                                     String studentlevel = jo2.getString("studentlevel");
                                     String lessonfee = jo2.getString("studentlevel");
-                                    String lessonsb = jo2.getString("lessonsubject");
+                                    String lessonsb = jo2.getString("LessonSubject");
                                     String lessonintro = jo2.getString("intro");
                                     String lesson_reg_date = jo2.getString("reg_date");
                                     int hits = jo2.getInt("hits");
                                     Boolean recruiting = false;
-                                    if(jo2.get("recruiting").equals("true")){
+                                    if (jo2.get("recruiting").equals("true")) {
                                         recruiting = true;
                                     }
 
@@ -359,6 +361,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
                                     Lesson lesson = new Lesson();
 
+                                    lesson.setLesson_id(lesson_id);
                                     lesson.setLesson_Title(lessontitle);
                                     lesson.setLesson_Background_Image(background_img);
                                     lesson.setStudentlevel(studentlevel);
@@ -368,7 +371,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                                     lesson.setReg_date(lesson_reg_date);
                                     lesson.setHits(hits);
                                     lesson.setRecruiting(recruiting);
-                                    Log.d("student", "" + subjects[j] + ")" +
+                                    Log.d("teacher", "" + subjects[j] + ")" +
                                             " name: " + name +
                                             " gender: " + gender +
                                             " profile_image" + profile_image +
@@ -402,6 +405,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                                     Total_list.get(j).add(teacher);
 
                                     mSectionsPagerAdapter.notifyDataSetChanged();
+                                    recyclerAdapter_teacher.notifyDataSetChanged();
 //                            String total = User_name + gender + id ;
 //                            Log.d("JSONARRAY",""+ i + ":" + tot
                                 }
@@ -679,11 +683,11 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         RecyclerView recyclerView;
-        RecyclerAdapter_student recyclerAdapterStudent;
-        RecyclerAdapter_teacher recyclerAdapter_teacher;
+
 
         GridLayoutManager layoutManager1;
         LinearLayoutManager layoutManager2;
+
         public PlaceholderFragment() {
         }
 
@@ -710,7 +714,6 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 //            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 //            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             recyclerView = (RecyclerView) rootView.findViewById(R.id.RecyclerView);
-
 //            if (New_list.size() == 0) {
 //                String URL, String User_name, String place, String subject, String fee
 //                recyclerAdapterStudent = new RecyclerAdapter_student(getContext(), New_list, R.layout.card_student);
@@ -749,7 +752,6 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                 recyclerView.setAdapter(recyclerAdapterStudent);
                 recyclerView.addOnScrollListener(infiniteScrollListener1());
             }
-
 //            }
 
 //            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -759,22 +761,21 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 //            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, 1);
 //            layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 //            layoutManager.setOrientation(StaggeredGridLayoutManager.VERTICAL);
-
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
 //                    Toast.makeText(getContext(), "index" + position + "User_name: " + list.get(position).getName(), Toast.LENGTH_SHORT).show();
                     Intent goInfo;
-                    if(User_job.equals("student")){
-                        goInfo = new Intent(getContext(),activity_Info_Class.class);
-                    }else{
-                        goInfo = new Intent(getContext(),activity_info_student.class);
+                    if (User_job.equals("student")) {
+                        goInfo = new Intent(getContext(), activity_Info_Class.class);
+                    } else {
+                        goInfo = new Intent(getContext(), activity_info_student.class);
                     }
 
                     goInfo.putExtra("person", list.get(position));
-                    goInfo.putExtra("id",User_id);
-                    goInfo.putExtra("name",User_name);
-                    goInfo.putExtra("job",User_job);
+                    goInfo.putExtra("id", User_id);
+                    goInfo.putExtra("name", User_name);
+                    goInfo.putExtra("job", User_job);
                     startActivity(goInfo);
                 }
 
@@ -783,6 +784,21 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
                 }
             }));
+            swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.search_people_rv_swipe);
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    setPeople();
+                    if(User_job.equals("student")){
+                        recyclerAdapter_teacher.notifyDataSetChanged();
+                    }else{
+                        recyclerAdapterStudent.notifyDataSetChanged();
+                    }
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+
 //            FragmentTransaction ft = getFragmentManager().beginTransaction();
 //            ft.detach(this).attach(this).commit();
 //            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
@@ -841,16 +857,15 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             People pp = Total_list.get(section).get(i);
                             Log.d("LoadMoreStudents111", "User_name: " + pp.getName());
                         }
-                        if(User_job.equals("student")){
+                        if (User_job.equals("student")) {
                             refreshView(recyclerView,
                                     new RecyclerAdapter_teacher(getContext(), Total_list.get(section), R.layout.card_lesson),
                                     firstVisibleItemPosition);
-                        }else if(User_job.equals("teacher")){
+                        } else if (User_job.equals("teacher")) {
                             refreshView(recyclerView,
                                     new RecyclerAdapter_student(getContext(), Total_list.get(section), R.layout.card_student),
                                     firstVisibleItemPosition);
                         }
-
 
                         Current_pages[section]++;
                     }
@@ -880,11 +895,11 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             People pp = Total_list.get(section).get(i);
                             Log.d("LoadMoreStudents222", "User_name: " + pp.getName());
                         }
-                        if(User_job.equals("student")){
+                        if (User_job.equals("student")) {
                             refreshView(recyclerView,
                                     new RecyclerAdapter_teacher(getContext(), Total_list.get(section), R.layout.card_lesson),
                                     firstVisibleItemPosition);
-                        }else if(User_job.equals("teacher")){
+                        } else if (User_job.equals("teacher")) {
                             refreshView(recyclerView,
                                     new RecyclerAdapter_student(getContext(), Total_list.get(section), R.layout.card_student),
                                     firstVisibleItemPosition);
@@ -1048,7 +1063,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
             for (int i = 0; i < ja.length(); i++) {
                 JSONObject jo2 = ja.getJSONObject(i);
                 //사용자가 선생님일 경우 -> 학생 양식에 맞게 담기
-                if(User_job.equals("teacher")){
+                if (User_job.equals("teacher")) {
                     String id = jo2.getString("id");
                     String name = jo2.getString("name");
                     String gender = jo2.getString("gender");
@@ -1095,7 +1110,8 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                     resultlist.add(st);
                 }
                 //사용자가 학생일 경우 -> 선생님 양식에 맞게 담기
-                else if(User_job.equals("student")){
+                else if (User_job.equals("student")) {
+                    int lesson_id = jo2.getInt("lesson_id");
                     String lessontitle = jo2.getString("title");
                     String background_img = jo2.getString("lessonbackground");
                     String studentlevel = jo2.getString("studentlevel");
@@ -1105,7 +1121,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                     String lesson_reg_date = jo2.getString("reg_date");
                     int hits = jo2.getInt("hits");
                     Boolean recruiting = false;
-                    if(jo2.get("recruiting").equals("true")){
+                    if (jo2.get("recruiting").equals("true")) {
                         recruiting = true;
                     }
 
@@ -1132,6 +1148,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
                     Lesson lesson = new Lesson();
 
+                    lesson.setLesson_id(lesson_id);
                     lesson.setLesson_Title(lessontitle);
                     lesson.setLesson_Background_Image(background_img);
                     lesson.setStudentlevel(studentlevel);
@@ -1189,7 +1206,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
         return resultlist;
     }
 
-    public void setPeople() {
+    public static void setPeople() {
         //jsonObject에 담아서 서버로 보내기
 
         JSONObject jo = new JSONObject();
@@ -1212,7 +1229,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
 //                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
 
-            if(User_job.equals("teacher")){
+            if (User_job.equals("teacher")) {
                 try {
                     JSONObject jo1 = new JSONObject(result);
 //                        JSONArray ja = new JSONArray(students);
@@ -1282,7 +1299,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }else if(User_job.equals("student")){
+            } else if (User_job.equals("student")) {
                 try {
                     JSONObject jo1 = new JSONObject(result);
 //                        JSONArray ja = new JSONArray(students);
@@ -1296,6 +1313,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
                         for (int i = 0; i < ja.length(); i++) {
                             JSONObject jo2 = ja.getJSONObject(i);
+                            int lesson_id = jo2.getInt("lesson_id");
                             String lessontitle = jo2.getString("title");
                             String background_img = jo2.getString("lessonbackground");
                             String studentlevel = jo2.getString("studentlevel");
@@ -1305,7 +1323,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             String lesson_reg_date = jo2.getString("reg_date");
                             int hits = jo2.getInt("hits");
                             Boolean recruiting = false;
-                            if(jo2.get("recruiting").equals("true")){
+                            if (jo2.get("recruiting").equals("true")) {
                                 recruiting = true;
                             }
 
@@ -1332,6 +1350,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
                             Lesson lesson = new Lesson();
 
+                            lesson.setLesson_id(lesson_id);
                             lesson.setLesson_Title(lessontitle);
                             lesson.setLesson_Background_Image(background_img);
                             lesson.setStudentlevel(studentlevel);
@@ -1382,8 +1401,6 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                     e.printStackTrace();
                 }
             }
-
-
 //            try {
 //                JSONObject jo3 = new JSONObject(result);
 ////                        JSONArray ja = new JSONArray(students);

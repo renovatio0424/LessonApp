@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+        <RadioGroup
+            android:id="@+id/reason_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+                <RadioButton
+                    android:text="과외 시간이 안맞아서"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/reason_box1"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:text="과외 장소가 멀어서"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/reason_box2"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:text="예상 과외비와 달라서"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/reason_box3"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:text="기타"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/reason_box4"
+                    android:layout_weight="1" />
+        </RadioGroup>
+
+        <EditText
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/reasion_editText"
+            android:hint="거절 사유를 입력해주세요" />
 
 </LinearLayout>

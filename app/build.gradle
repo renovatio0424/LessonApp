@@ -47,6 +47,7 @@ dependencies {
 
     //glide
     compile 'com.github.bumptech.glide:glide:3.6.0'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
     //crop
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
     //리사이클러뷰 갱신 라이브러리
