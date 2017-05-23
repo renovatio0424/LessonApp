@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_img_student"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:foregroundGravity="bottom|center_horizontal"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                style="@style/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:padding="10dp"
+                    android:id="@+id/textView76"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="학생 정보"
+                    android:textColor="@color/Black"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView37"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="이름" />
+
+                <TextView
+                    android:id="@+id/info_student_name"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="홍길동" />
+
+                <TextView
+                    style="@style/divider" />
+
+                <TextView
+                    android:id="@+id/textView59"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="성별" />
+
+                <TextView
+                    android:id="@+id/info_student_gender"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="남자" />
+
+                <TextView
+                    style="@style/divider" />
+
+                <TextView
+                    android:id="@+id/textView60"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="나이" />
+
+                <TextView
+                    android:id="@+id/info_student_age"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="18" />
+
+                <TextView
+                    style="@style/divider" />
+
+                <TextView
+                    android:id="@+id/textView61"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="주소" />
+
+                <TextView
+                    android:id="@+id/info_student_address"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="서울시 강남구 청담동" />
+
+                <TextView
+                    style="@style/divider" />
+
+
+                <TextView
+                    android:id="@+id/textView62"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="희망 과외 과목" />
+
+                <TextView
+                    android:id="@+id/info_student_subject"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="국어" />
+
+                <TextView
+                    style="@style/divider" />
+
+                <TextView
+                    android:id="@+id/textView63"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="희망 과외비" />
+
+                <TextView
+                    android:id="@+id/info_student_fee"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="35만원" />
+
+                <TextView
+                    style="@style/divider" />
+
+                <TextView
+                    android:id="@+id/textView64"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="자기소개" />
+
+                <TextView
+                    android:id="@+id/info_student_intro"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="국어 포기자 ㅠㅠ" />
+
+            </LinearLayout>
+
+            <TextView style="@style/bold_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/textView65"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="선생님 조건"
+                    android:textColor="@color/Black"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView67"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="성별" />
+
+                <TextView
+                    android:id="@+id/info_student_tg"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="여자" />
+
+                <TextView
+                    style="@style/divider" />
+
+                <TextView
+                    android:id="@+id/textView66"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="연령대" />
+
+                <TextView
+                    android:layout_marginBottom="40dp"
+                    android:id="@+id/info_student_ta"
+                    style="@style/text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="27~32" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        android:layout_gravity="bottom"
+        android:id="@+id/Request_teacher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="과외 상담 제안하기" />
+</FrameLayout>

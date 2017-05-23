@@ -2,10 +2,8 @@ package com.example.kimjungwon.lessonapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -28,8 +27,7 @@ public class activity_mypage extends AppCompatActivity implements View.OnClickLi
     Toolbar toolbar ;
 
     ImageView profileimage;
-    TableRow change_Userinfo,change_lessoninfo,regist_lesson,manage_lesson,logout;
-
+    TableRow change_Userinfo,change_lessoninfo,regist_lesson,manage_lesson,consult_lesson,logout;
     String User_id, User_job, User_name;
     private static String TAG = activity_mypage.class.getSimpleName();
 
@@ -57,6 +55,8 @@ public class activity_mypage extends AppCompatActivity implements View.OnClickLi
         change_lessoninfo = (TableRow) findViewById(R.id.mypage_lesson_info);
         regist_lesson = (TableRow) findViewById(R.id.mypage_insert_lesson);
         manage_lesson = (TableRow) findViewById(R.id.mypage_manage_lesson);
+        consult_lesson = (TableRow) findViewById(R.id.mypage_request_lesson);
+
         logout = (TableRow) findViewById(R.id.mypage_logout);
 
         //학생일 경우 수업 등록/수업 관리 안뜨도록
@@ -70,6 +70,7 @@ public class activity_mypage extends AppCompatActivity implements View.OnClickLi
         change_lessoninfo.setOnClickListener(this);
         regist_lesson.setOnClickListener(this);
         manage_lesson.setOnClickListener(this);
+        consult_lesson.setOnClickListener(this);
         logout.setOnClickListener(this);
     }
 
@@ -121,6 +122,10 @@ public class activity_mypage extends AppCompatActivity implements View.OnClickLi
             case R.id.mypage_manage_lesson:
                 Toast.makeText(this, "manage lesson !!", Toast.LENGTH_SHORT).show();
                 break;
+//            case R.id.mypage_request_lesson:
+//                Intent goConsult = new Intent(activity_mypage.this,activity_myconsulting.class);
+//                startActivity(goConsult);
+//                break;
             case R.id.mypage_logout:
                 Toast.makeText(this, "logout !!", Toast.LENGTH_SHORT).show();
                 break;

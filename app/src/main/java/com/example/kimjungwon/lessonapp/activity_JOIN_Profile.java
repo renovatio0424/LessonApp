@@ -355,7 +355,7 @@ public class activity_JOIN_Profile extends AppCompatActivity implements View.OnC
                                     Message msg = mAreaHandler.obtainMessage();
                                     msg.setData(bundle);
                                     mAreaHandler.sendMessage(msg);
-//                        Message msg = handler2.obtainMessage();
+//                        Chat msg = handler2.obtainMessage();
 //                        msg.setData(bundle);
 //                        handler2.sendMessage(msg);
                                 }
@@ -443,7 +443,7 @@ public class activity_JOIN_Profile extends AppCompatActivity implements View.OnC
                                     Message msg = mAreaHandler.obtainMessage();
                                     msg.setData(bundle);
                                     mAreaHandler.sendMessage(msg);
-//                        Message msg = handler2.obtainMessage();
+//                        Chat msg = handler2.obtainMessage();
 //                        msg.setData(bundle);
 //                        handler2.sendMessage(msg);
                                 }
@@ -488,10 +488,10 @@ public class activity_JOIN_Profile extends AppCompatActivity implements View.OnC
 //                                Bundle bundle = new Bundle();
 //                                bundle.putString("result", result);
 //
-//                                Message msg = mAreaHandler.obtainMessage();
+//                                Chat msg = mAreaHandler.obtainMessage();
 //                                msg.setData(bundle);
 //                                mAreaHandler.sendMessage(msg);
-////                        Message msg = handler2.obtainMessage();
+////                        Chat msg = handler2.obtainMessage();
 ////                        msg.setData(bundle);
 ////                        handler2.sendMessage(msg);
 //                            }
@@ -642,7 +642,7 @@ public class activity_JOIN_Profile extends AppCompatActivity implements View.OnC
                 Message msg = mAreaHandler.obtainMessage();
                 msg.setData(bundle);
                 mAreaHandler.sendMessage(msg);
-//                Message msg = handler.obtainMessage();
+//                Chat msg = handler.obtainMessage();
 //                msg.setData(bundle);
 //                handler.sendMessage(msg);
             }
@@ -693,7 +693,7 @@ public class activity_JOIN_Profile extends AppCompatActivity implements View.OnC
     //시도 리스트에 데이터 넣어주는 핸들러
 
 //    Handler handler = new Handler() {
-//        public void handleMessage(Message msg) {
+//        public void handleMessage(Chat msg) {
 //            Bundle bun = msg.getData();
 //            String result = bun.getString("result");
 //            String array = "";
@@ -724,7 +724,7 @@ public class activity_JOIN_Profile extends AppCompatActivity implements View.OnC
 //
 //    //구군 리스트에 데이터 넣어주는 핸들러
 //    Handler handler2 = new Handler() {
-//        public void handleMessage(Message msg) {
+//        public void handleMessage(Chat msg) {
 //            Bundle bun = msg.getData();
 //            String result = bun.getString("result");
 //            String array = "";

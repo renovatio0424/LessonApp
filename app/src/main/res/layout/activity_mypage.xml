@@ -139,6 +139,29 @@
                     android:background="@drawable/rec_border"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:id="@+id/mypage_request_lesson">
+
+                    <TextView
+                        android:layout_weight="1"
+                        style="@style/text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/mypage_request_lesson_view"
+                        android:text="내 상담 관리"/>
+
+                    <ImageView
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right"
+                        android:id="@+id/imageView16" />
+
+                </TableRow>
+
+                <TableRow
+                    android:background="@drawable/rec_border"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:id="@+id/mypage_logout">
 
                     <TextView
@@ -156,6 +179,7 @@
                         android:src="@drawable/ic_arrow_right"
                         android:id="@+id/imageView15" />
                 </TableRow>
+
             </TableLayout>
 
 

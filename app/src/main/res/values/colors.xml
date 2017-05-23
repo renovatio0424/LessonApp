@@ -10,4 +10,7 @@
     <color name="Green">#19ff00</color>
     <color name="Red">#ff0000</color>
     <color name="Yellow">#fffa00</color>
+    <color name="Orange">#ffae00</color>
+    <color name="SkyBlue">#00faff</color>
+    <color name="Pink">#ff00fa</color>
 </resources>

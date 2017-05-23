@@ -8,7 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
+
+import static com.example.kimjungwon.lessonapp.URLconfig.MyURL;
 
 /**
  * Created by kimjungwon on 2017-02-25.
@@ -38,10 +42,14 @@ public class RecyclerAdapter_student extends RecyclerView.Adapter<RecyclerAdapte
         Student student = (Student) studentList.get(position);
 
 //        holder.profileImage.setImageURI(Uri.parse(student.getProfile_image()));
-        if(student.getGender().charAt(0) == 'M'){
-            holder.profileImage.setImageResource(R.drawable.ic_male_student);
+        if(student.getProfile_image().equals("null")){
+            if(student.getGender().equals("남자")){
+                holder.profileImage.setImageResource(R.drawable.ic_male_student);
+            }else{
+                holder.profileImage.setImageResource(R.drawable.ic_female_student);
+            }
         }else{
-            holder.profileImage.setImageResource(R.drawable.ic_female_student);
+            Glide.with(context).load(MyURL + student.getProfile_image()).into(holder.profileImage);
         }
 
         holder.name_view.setText(student.getName());

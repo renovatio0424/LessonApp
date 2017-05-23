@@ -427,6 +427,7 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
 
 
                 try {
+
                     if (!Data.hasExtra("social")) {
                         jo.put("id", Data.getStringExtra("id"));
                         jo.put("pw", Data.getStringExtra("pw"));
@@ -507,6 +508,8 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
                     jo.put("LessonFee", Fee);
                     jo.put("dealpossible", dealpossible);
                     jo.put("intro", intro);
+
+
 
                     String str_json = jo.toString();
 
@@ -1241,10 +1244,10 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
 //                                Bundle bundle = new Bundle();
 //                                bundle.putString("result", result);
 //
-//                                Message msg = mAreaHandler.obtainMessage();
+//                                Chat msg = mAreaHandler.obtainMessage();
 //                                msg.setData(bundle);
 //                                mAreaHandler.sendMessage(msg);
-////                        Message msg = handler2.obtainMessage();
+////                        Chat msg = handler2.obtainMessage();
 ////                        msg.setData(bundle);
 ////                        handler2.sendMessage(msg);
 //                            }
@@ -1352,10 +1355,10 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
 //                                Bundle bundle = new Bundle();
 //                                bundle.putString("result", result);
 //
-//                                Message msg = mAreaHandler.obtainMessage();
+//                                Chat msg = mAreaHandler.obtainMessage();
 //                                msg.setData(bundle);
 //                                mAreaHandler.sendMessage(msg);
-////                        Message msg = handler2.obtainMessage();
+////                        Chat msg = handler2.obtainMessage();
 ////                        msg.setData(bundle);
 ////                        handler2.sendMessage(msg);
 //                            }
@@ -1462,10 +1465,10 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
 //                                Bundle bundle = new Bundle();
 //                                bundle.putString("result", result);
 //
-//                                Message msg = mAreaHandler.obtainMessage();
+//                                Chat msg = mAreaHandler.obtainMessage();
 //                                msg.setData(bundle);
 //                                mAreaHandler.sendMessage(msg);
-////                        Message msg = handler2.obtainMessage();
+////                        Chat msg = handler2.obtainMessage();
 ////                        msg.setData(bundle);
 ////                        handler2.sendMessage(msg);
 //                            }
@@ -1571,10 +1574,10 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
 //                                Bundle bundle = new Bundle();
 //                                bundle.putString("result", result);
 //
-//                                Message msg = mAreaHandler.obtainMessage();
+//                                Chat msg = mAreaHandler.obtainMessage();
 //                                msg.setData(bundle);
 //                                mAreaHandler.sendMessage(msg);
-////                        Message msg = handler2.obtainMessage();
+////                        Chat msg = handler2.obtainMessage();
 ////                        msg.setData(bundle);
 ////                        handler2.sendMessage(msg);
 //                            }
@@ -1890,7 +1893,7 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
                 Bundle bundle = new Bundle();
                 bundle.putString("result", result);
 
-//                Message msg = mAreaHandler[0][0].obtainMessage();
+//                Chat msg = mAreaHandler[0][0].obtainMessage();
 //                msg.setData(bundle);
 //                mAreaHandler[0][0].sendMessage(msg);
 
@@ -1900,7 +1903,7 @@ public class activity_JOIN_ClassInfo extends AppCompatActivity implements View.O
                     mAreaHandler[i][0].sendMessage(msg);
                 }
 
-//                Message msg = handler.obtainMessage();
+//                Chat msg = handler.obtainMessage();
 //                msg.setData(bundle);
 //                handler.sendMessage(msg);
             }

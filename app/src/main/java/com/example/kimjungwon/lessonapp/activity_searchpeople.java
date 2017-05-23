@@ -225,7 +225,6 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                     String[] title_array = title.split("@");
 
                     if (title_array.length > 1) {
-
                         title = title_array[0] + " 외 " + (title_array.length - 1) + "곳";
                     } else {
                         title = title_array[0];
@@ -256,6 +255,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
                                 for (int i = 0; i < ja.length(); i++) {
                                     JSONObject jo2 = ja.getJSONObject(i);
+                                    String id = jo2.getString("id");
                                     String name = jo2.getString("name");
                                     String gender = jo2.getString("gender");
                                     String profile_image = jo2.getString("profile_image");
@@ -283,6 +283,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                                             " last_connect_date: " + last_connect_date);
 
                                     Student st = new Student();
+                                    st.setId(id);
                                     st.setName(name);
                                     st.setGender(gender);
                                     st.setProfile_image(profile_image);
@@ -336,6 +337,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
 
                                     JSONObject teacher_json = jo2.getJSONObject("teacher");
+                                    String id = teacher_json.getString("id");
                                     String name = teacher_json.getString("name");
                                     String gender = teacher_json.getString("gender");
                                     String age = teacher_json.getString("age");
@@ -404,14 +406,10 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 //                            Log.d("JSONARRAY",""+ i + ":" + tot
                                 }
                             }
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-
-
 //                    for (int i = 0; i < New_list.size(); i++) {
 //                        String User_name = New_list.get(i).getName();
 //                        String gender = New_list.get(i).getGender();
@@ -483,7 +481,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 //
 //                Bundle bundle = new Bundle();
 //                bundle.putString("result", result);
-//                Message msg = handler.obtainMessage();
+//                Chat msg = handler.obtainMessage();
 //                msg.setData(bundle);
 //                handler.sendMessage(msg);
 //            }
@@ -491,7 +489,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 //    }
 
 //    Handler handler = new Handler() {
-//        public void handleMessage(Message msg) {
+//        public void handleMessage(Chat msg) {
 //            Bundle bun = msg.getData();
 //            String result = bun.getString("result");
 //            String array = "";
@@ -555,7 +553,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 //
 //                                Bundle bundle = new Bundle();
 //                                bundle.putString("result", result);
-//                                Message msg = handler2.obtainMessage();
+//                                Chat msg = handler2.obtainMessage();
 //                                msg.setData(bundle);
 //                                handler2.sendMessage(msg);
 //                            }
@@ -592,7 +590,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 //    }
 //
 //    Handler handler2 = new Handler() {
-//        public void handleMessage(Message msg) {
+//        public void handleMessage(Chat msg) {
 //            Bundle bun = msg.getData();
 //            String result = bun.getString("result");
 //            String array = "";
@@ -765,11 +763,19 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
             recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Toast.makeText(getContext(), "index" + position + "User_name: " + list.get(position).getName(), Toast.LENGTH_SHORT).show();
-                    Intent goInfoClass = new Intent(getContext(),activity_Info_Class.class);
-                    goInfoClass.putExtra("person", list.get(position));
-                    goInfoClass.putExtra("job",User_job);
-                    startActivity(goInfoClass);
+//                    Toast.makeText(getContext(), "index" + position + "User_name: " + list.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    Intent goInfo;
+                    if(User_job.equals("student")){
+                        goInfo = new Intent(getContext(),activity_Info_Class.class);
+                    }else{
+                        goInfo = new Intent(getContext(),activity_info_student.class);
+                    }
+
+                    goInfo.putExtra("person", list.get(position));
+                    goInfo.putExtra("id",User_id);
+                    goInfo.putExtra("name",User_name);
+                    goInfo.putExtra("job",User_job);
+                    startActivity(goInfo);
                 }
 
                 @Override
@@ -893,11 +899,11 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
     }
 
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -1043,6 +1049,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                 JSONObject jo2 = ja.getJSONObject(i);
                 //사용자가 선생님일 경우 -> 학생 양식에 맞게 담기
                 if(User_job.equals("teacher")){
+                    String id = jo2.getString("id");
                     String name = jo2.getString("name");
                     String gender = jo2.getString("gender");
                     String profile_image = jo2.getString("profile_image");
@@ -1070,6 +1077,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             " last_connect_date: " + last_connect_date);
 
                     Student st = new Student();
+                    st.setId(id);
                     st.setName(name);
                     st.setGender(gender);
                     st.setProfile_image(profile_image);
@@ -1102,6 +1110,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                     }
 
                     JSONObject teacher_json = jo2.getJSONObject("teacher");
+                    String id = teacher_json.getString("id");
                     String name = teacher_json.getString("name");
                     String gender = teacher_json.getString("gender");
                     String age = teacher_json.getString("age");
@@ -1145,6 +1154,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             " last_connect_date: " + last_connect_date);
 
                     Teacher teacher = new Teacher();
+                    teacher.setId(id);
                     teacher.setName(name);
                     teacher.setGender(gender);
                     teacher.setAge(age);
@@ -1216,6 +1226,8 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
                         for (int i = 0; i < ja.length(); i++) {
                             JSONObject jo2 = ja.getJSONObject(i);
+                            String id = jo2.getString("id");
+                            String age = jo2.getString("age");
                             String name = jo2.getString("name");
                             String gender = jo2.getString("gender");
                             String profile_image = jo2.getString("profile_image");
@@ -1232,8 +1244,9 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
                             Log.d("student", "" + subjects[j] + ")" +
                                     " name: " + name +
+                                    " age: " + age +
                                     " gender: " + gender +
-                                    " profile_image" + profile_image +
+                                    " profile_image: " + profile_image +
                                     " address: " + address +
                                     " LessonFee: " + LessonFee +
                                     " LessonSubject: " + LessonSubject +
@@ -1243,6 +1256,8 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                                     " last_connect_date: " + last_connect_date);
 
                             Student st = new Student();
+                            st.setId(id);
+                            st.setAge(age);
                             st.setName(name);
                             st.setGender(gender);
                             st.setProfile_image(profile_image);
@@ -1296,6 +1311,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
 
 
                             JSONObject teacher_json = jo2.getJSONObject("teacher");
+                            String id = teacher_json.getString("id");
                             String name = teacher_json.getString("name");
                             String gender = teacher_json.getString("gender");
                             String age = teacher_json.getString("age");
@@ -1314,9 +1330,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             String lessonplace = teacher_json.getString("lessonplace");
                             String schedule = teacher_json.getString("schedule");
 
-
                             Lesson lesson = new Lesson();
-
 
                             lesson.setLesson_Title(lessontitle);
                             lesson.setLesson_Background_Image(background_img);
@@ -1340,6 +1354,7 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                                     " last_connect_date: " + last_connect_date);
 
                             Teacher teacher = new Teacher();
+                            teacher.setId(id);
                             teacher.setName(name);
                             teacher.setGender(gender);
                             teacher.setAge(age);
@@ -1361,12 +1376,8 @@ public class activity_searchpeople extends AppCompatActivity implements View.OnC
                             Total_list.get(j).add(teacher);
 
                             mSectionsPagerAdapter.notifyDataSetChanged();
-//                            String total = User_name + gender + id ;
-//                            Log.d("JSONARRAY",""+ i + ":" + tot
                         }
                     }
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

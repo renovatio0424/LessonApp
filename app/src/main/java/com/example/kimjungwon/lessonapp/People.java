@@ -12,6 +12,7 @@ import java.util.StringTokenizer;
  */
 
 public class People implements Serializable{
+    private String id;
     private String Name;
     private String Gender;
     private String age;
@@ -25,6 +26,14 @@ public class People implements Serializable{
     public People(){
         subject = new ArrayList<>();
         fee = new ArrayList<>();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getGender() {
@@ -52,7 +61,7 @@ public class People implements Serializable{
     }
 
     public void setGender(String gender) {
-        Gender = gender;
+        Gender = gender.equals("M") ? "남자":"여자";
     }
 
     public void setProfile_image(String profile_image) {
@@ -86,7 +95,6 @@ public class People implements Serializable{
     public ArrayList<String> getFee(){
         return this.fee;
     }
-
 
     public Boolean getDealpossible(){
         return this.dealpossible;

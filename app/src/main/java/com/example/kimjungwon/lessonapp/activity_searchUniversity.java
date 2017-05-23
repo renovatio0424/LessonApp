@@ -143,7 +143,7 @@ public class activity_searchUniversity extends AppCompatActivity {
 
             switch (msg.what) {
                 case SEND_COLLEGE_LIST:
-                    Log.d("handle Message", "start!");
+                    Log.d("handle Chat", "start!");
                     if(Colleges.get(0).equals("null")){
                         Toast.makeText(activity_searchUniversity.this, "검색 결과가 없습니다", Toast.LENGTH_SHORT).show();
                         Colleges.clear();

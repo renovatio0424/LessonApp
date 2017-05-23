@@ -95,9 +95,9 @@
 
     <Button
         android:layout_gravity="bottom"
-        android:text="Button"
+        android:text="과외 상담 문의하기"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button3" />
+        android:id="@+id/RequestLesson" />
 
 </android.support.design.widget.CoordinatorLayout>

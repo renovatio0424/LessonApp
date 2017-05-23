@@ -43,8 +43,12 @@
         <item name="android:background">#dddddd</item>
     </style>
 
-    <style name="button_yellow">
-        <item name="android:background"></item>
+    <style name="bold_divider">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:background">#dddddd</item>
     </style>
 
 </resources>

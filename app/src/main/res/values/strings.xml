@@ -50,6 +50,7 @@ TESOL 자격증을 취득하여 영어로 수업을 진행하는데 전혀
 
 일반 대학생 선생님과 차별화될 수 밖에 없습니다.
     </string>
+    <string name="dont_ask_again">don\'t ask again</string>
 
     <string-array name="area_select">
         <item>선택</item>
